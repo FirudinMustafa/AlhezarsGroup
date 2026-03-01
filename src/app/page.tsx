@@ -30,6 +30,8 @@ import {
   Phone,
   Mail,
   MapPin,
+  Sun,
+  Moon,
 } from 'lucide-react';
 
 // ─────────────────────────────────────────────────────────────────
@@ -437,6 +439,142 @@ function ProgressBar() {
           'linear-gradient(90deg, #7c3aed 0%, #a855f7 50%, #c084fc 100%)',
       }}
     />
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────
+// PACKAGE CAROUSEL
+// ─────────────────────────────────────────────────────────────────
+
+function PackageCarousel({
+  cards,
+  cardWidth = 'w-[272px]',
+}: {
+  cards: React.ReactNode[];
+  cardWidth?: string;
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [idx, setIdx] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartX = useRef(0);
+  const dragScrollStart = useRef(0);
+  const count = cards.length;
+
+  // Auto-advance every 3.2 s
+  useEffect(() => {
+    if (paused) return;
+    const id = setInterval(() => setIdx((c) => (c + 1) % count), 3200);
+    return () => clearInterval(id);
+  }, [paused, count]);
+
+  // Scroll to active card
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const card = el.children[idx] as HTMLElement;
+    if (card) el.scrollTo({ left: card.offsetLeft - 16, behavior: 'smooth' });
+  }, [idx]);
+
+  // Mouse drag support
+  const onMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setPaused(true);
+    dragStartX.current = e.clientX;
+    dragScrollStart.current = scrollRef.current?.scrollLeft ?? 0;
+  };
+  const onMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !scrollRef.current) return;
+    scrollRef.current.scrollLeft = dragScrollStart.current - (e.clientX - dragStartX.current);
+  };
+  const onMouseUp = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    const dx = e.clientX - dragStartX.current;
+    if (dx < -60) setIdx((c) => Math.min(count - 1, c + 1));
+    else if (dx > 60) setIdx((c) => Math.max(0, c - 1));
+    setTimeout(() => setPaused(false), 4000);
+  };
+
+  return (
+    <div className="relative">
+      {/* Scroll track */}
+      <div
+        ref={scrollRef}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
+        onMouseLeave={() => { setIsDragging(false); }}
+        onMouseEnter={() => setPaused(true)}
+        onTouchStart={() => setPaused(true)}
+        onTouchEnd={() => setTimeout(() => setPaused(false), 4000)}
+        className="flex gap-4 overflow-x-auto pb-4 px-1 select-none"
+        style={{
+          scrollSnapType: 'x mandatory',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          cursor: isDragging ? 'grabbing' : 'grab',
+        }}
+      >
+        {cards.map((card, i) => (
+          <div
+            key={i}
+            className={`flex-shrink-0 ${cardWidth}`}
+            style={{ scrollSnapAlign: 'start' }}
+          >
+            {card}
+          </div>
+        ))}
+      </div>
+
+      {/* Dot pagination */}
+      <div className="flex justify-center gap-1.5 mt-5">
+        {cards.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => { setIdx(i); setPaused(true); setTimeout(() => setPaused(false), 5000); }}
+            className={`h-1.5 rounded-full transition-all duration-300 ${
+              i === idx ? 'w-5 bg-purple-500' : 'w-1.5 bg-white/20'
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────
+// THEME TOGGLE
+// ─────────────────────────────────────────────────────────────────
+
+function ThemeToggle() {
+  const [isDark, setIsDark] = useState(true);
+
+  const toggle = () => {
+    const next = !isDark;
+    setIsDark(next);
+    document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light');
+  };
+
+  return (
+    <motion.button
+      onClick={toggle}
+      whileHover={{ scale: 1.12 }}
+      whileTap={{ scale: 0.88, rotate: 15 }}
+      title={isDark ? 'Light mode' : 'Dark mode'}
+      className="fixed bottom-6 right-6 z-[90] w-11 h-11 rounded-full flex items-center justify-center shadow-2xl border border-white/10 backdrop-blur-md transition-colors duration-500"
+      style={{
+        background: isDark
+          ? 'rgba(28, 18, 60, 0.85)'
+          : 'rgba(245, 243, 255, 0.9)',
+      }}
+    >
+      {isDark ? (
+        <Sun className="w-[18px] h-[18px] text-amber-300" />
+      ) : (
+        <Moon className="w-[18px] h-[18px] text-purple-800" />
+      )}
+    </motion.button>
   );
 }
 
@@ -975,121 +1113,92 @@ function SocialPackages() {
           </p>
         </FadeUp>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-start">
-          {SOCIAL_PACKAGES.map((pkg, i) => (
-            <FadeUp key={pkg.name} delay={i * 0.08}>
-              {/* Outer wrapper holds the spinning border ring */}
-              <div className="relative rounded-2xl p-[1.5px]"
-                style={{ background: 'transparent' }}>
-                {/* Spinning conic ring — visible as animated border */}
+        <FadeUp>
+          <PackageCarousel
+            cardWidth="w-[272px]"
+            cards={SOCIAL_PACKAGES.map((pkg, i) => (
+              <div key={pkg.name} className="relative rounded-2xl p-[1.5px] h-full">
                 <motion.div
                   animate={{ rotate: 360 }}
-                  transition={{
-                    duration: pkg.popular ? 4 : 9 + i * 2,
-                    repeat: Infinity,
-                    ease: 'linear',
-                  }}
+                  transition={{ duration: pkg.popular ? 4 : 9 + i * 2, repeat: Infinity, ease: 'linear' }}
                   className="absolute inset-0 rounded-2xl pointer-events-none"
                   style={{
                     background: `conic-gradient(from 0deg, transparent 0%, ${pkg.popular ? '#7c3aed' : 'rgba(139,92,246,0.55)'} 30%, transparent 55%)`,
                     opacity: pkg.popular ? 1 : 0.5,
                   }}
                 />
-
-              <motion.div
-                whileHover={{
-                  y: pkg.popular ? -12 : -8,
-                  rotateX: -4,
-                  rotateY: pkg.popular ? 0 : 4,
-                  scale: 1.02,
-                }}
-                transition={{ duration: 0.25, ease: EASE }}
-                style={{ transformStyle: 'preserve-3d', perspective: 900 }}
-                className={`relative flex flex-col rounded-[10px] overflow-hidden ${
-                  pkg.popular
-                    ? 'bg-gradient-to-b from-purple-900/35 to-black/70 shadow-2xl shadow-purple-900/20'
-                    : 'bg-[#04040a]'
-                }`}
-              >
-
-                {/* Popular top line */}
-                {pkg.popular && (
-                  <motion.div
-                    animate={{ opacity: [0.6, 1, 0.6] }}
-                    transition={{ duration: 2.5, repeat: Infinity }}
-                    className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"
-                  />
-                )}
-                {/* Subtle shimmer for popular */}
-                {pkg.popular && (
-                  <motion.div
-                    animate={{ opacity: [0, 0.08, 0] }}
-                    transition={{ duration: 3.5, repeat: Infinity }}
-                    className="absolute inset-0 shimmer pointer-events-none"
-                  />
-                )}
-
-                <div className="p-5 flex-1">
-                  <div className="flex items-start justify-between mb-1">
-                    <h3 className="text-2xl font-black text-white">
-                      {pkg.name}
-                    </h3>
-                    {pkg.popular && (
-                      <motion.span
-                        animate={{ opacity: [0.75, 1, 0.75] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className="text-[10px] font-bold text-purple-300 bg-purple-500/20 px-2 py-0.5 rounded-full border border-purple-500/20"
-                      >
-                        Populyar
-                      </motion.span>
-                    )}
+                <motion.div
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                  className={`relative flex flex-col rounded-[10px] overflow-hidden h-full ${
+                    pkg.popular
+                      ? 'bg-gradient-to-b from-purple-900/35 to-black/70 shadow-2xl shadow-purple-900/20'
+                      : 'bg-[#04040a]'
+                  }`}
+                >
+                  {pkg.popular && (
+                    <motion.div
+                      animate={{ opacity: [0.6, 1, 0.6] }}
+                      transition={{ duration: 2.5, repeat: Infinity }}
+                      className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"
+                    />
+                  )}
+                  {pkg.popular && (
+                    <motion.div
+                      animate={{ opacity: [0, 0.08, 0] }}
+                      transition={{ duration: 3.5, repeat: Infinity }}
+                      className="absolute inset-0 shimmer pointer-events-none"
+                    />
+                  )}
+                  <div className="p-5 flex-1">
+                    <div className="flex items-start justify-between mb-1">
+                      <h3 className="text-2xl font-black text-white">{pkg.name}</h3>
+                      {pkg.popular && (
+                        <motion.span
+                          animate={{ opacity: [0.75, 1, 0.75] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                          className="text-[10px] font-bold text-purple-300 bg-purple-500/20 px-2 py-0.5 rounded-full border border-purple-500/20"
+                        >
+                          Populyar
+                        </motion.span>
+                      )}
+                    </div>
+                    <p className="text-white/30 text-xs mb-5">{pkg.contentCount} kontent/ay</p>
+                    <div className="flex items-end gap-1 mb-6">
+                      <span className="text-3xl font-black text-white leading-none">{pkg.price.toLocaleString()}</span>
+                      <span className="text-white/35 text-sm mb-0.5">₼/ay</span>
+                    </div>
+                    <ul className="space-y-2">
+                      {pkg.features.map((f) => (
+                        <li key={f} className="flex items-start gap-2 text-[11.5px] text-amber-300/80">
+                          <Check className="w-3.5 h-3.5 text-amber-400 mt-0.5 flex-shrink-0" />
+                          <span>{f}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                  <p className="text-white/30 text-xs mb-5">
-                    {pkg.contentCount} kontent/ay
-                  </p>
-
-                  <div className="flex items-end gap-1 mb-6">
-                    <span className="text-[clamp(24px,3vw,32px)] font-black text-white leading-none">
-                      {pkg.price.toLocaleString()}
-                    </span>
-                    <span className="text-white/35 text-sm mb-0.5">₼/ay</span>
+                  <div className="p-5 pt-0">
+                    <motion.a
+                      href="#elaqe"
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      className={`group flex items-center justify-center gap-1.5 py-2.5 text-sm font-bold rounded-xl transition-colors ${
+                        pkg.popular
+                          ? 'bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-900/30'
+                          : 'bg-white/[0.06] hover:bg-white/[0.1] text-white/55 hover:text-white'
+                      }`}
+                    >
+                      Başlayaq
+                      <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    </motion.a>
                   </div>
-
-                  <ul className="space-y-2">
-                    {pkg.features.map((f) => (
-                      <li
-                        key={f}
-                        className="flex items-start gap-2 text-[11.5px] text-amber-300/80"
-                      >
-                        <Check className="w-3.5 h-3.5 text-amber-400 mt-0.5 flex-shrink-0" />
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="p-5 pt-0">
-                  <motion.a
-                    href="#elaqe"
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    className={`group flex items-center justify-center gap-1.5 py-2.5 text-sm font-bold rounded-xl transition-colors ${
-                      pkg.popular
-                        ? 'bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-900/30'
-                        : 'bg-white/[0.06] hover:bg-white/[0.1] text-white/55 hover:text-white'
-                    }`}
-                  >
-                    Başlayaq
-                    <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                  </motion.a>
-                </div>
-              </motion.div>
+                </motion.div>
               </div>
-            </FadeUp>
-          ))}
-        </div>
+            ))}
+          />
+        </FadeUp>
 
-        <FadeUp delay={0.4} className="text-center mt-8">
+        <FadeUp delay={0.2} className="text-center mt-6">
           <p className="text-white/15 text-xs">
             Bütün paketlər aylıq ödənişli. Reklam büdcəsi ayrıca müştəri
             tərəfindən qarşılanır.
@@ -1121,97 +1230,73 @@ function WebPackages() {
           </p>
         </FadeUp>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {WEB_PACKAGES.map((pkg, i) => (
-            <FadeUp key={pkg.name} delay={i * 0.1}>
-              {/* Outer wrapper with spinning border */}
-              <div className="relative rounded-2xl p-[1.5px] h-full">
+        <FadeUp>
+          <PackageCarousel
+            cardWidth="w-[290px]"
+            cards={WEB_PACKAGES.map((pkg, i) => (
+              <div key={pkg.name} className="relative rounded-2xl p-[1.5px] h-full">
                 <motion.div
                   animate={{ rotate: 360 }}
-                  transition={{
-                    duration: pkg.popular ? 5 : 11 + i * 2,
-                    repeat: Infinity,
-                    ease: 'linear',
-                  }}
+                  transition={{ duration: pkg.popular ? 5 : 11 + i * 2, repeat: Infinity, ease: 'linear' }}
                   className="absolute inset-0 rounded-2xl pointer-events-none"
                   style={{
                     background: `conic-gradient(from 0deg, transparent 0%, ${pkg.popular ? '#7c3aed' : 'rgba(139,92,246,0.55)'} 30%, transparent 55%)`,
                     opacity: pkg.popular ? 1 : 0.45,
                   }}
                 />
-
-              <motion.div
-                whileHover={{
-                  y: pkg.popular ? -12 : -8,
-                  rotateX: -4,
-                  rotateY: 4,
-                  scale: 1.02,
-                }}
-                transition={{ duration: 0.25, ease: EASE }}
-                style={{ transformStyle: 'preserve-3d', perspective: 900 }}
-                className={`relative flex flex-col p-6 rounded-[10px] h-full ${
-                  pkg.popular
-                    ? 'bg-gradient-to-b from-purple-900/30 to-black/60 shadow-xl shadow-purple-900/15'
-                    : 'bg-[#04040a]'
-                }`}
-              >
-                {pkg.popular && (
-                  <div className="absolute -top-px left-10 right-10 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
-                )}
-
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-1.5">
-                    <h3 className="text-xl font-black text-white">
-                      {pkg.name}
-                    </h3>
-                    {pkg.popular && (
-                      <span className="text-[10px] font-bold text-purple-300 bg-purple-500/20 px-2 py-0.5 rounded-full border border-purple-500/20">
-                        Populyar
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-white/30 text-sm">{pkg.subtitle}</p>
-                </div>
-
-                <div className="mb-6 pb-6 border-b border-white/[0.05]">
-                  <p className="text-white/40 text-sm font-semibold">
-                    Qiymət üçün
-                  </p>
-                  <p className="text-white/20 text-xs mt-0.5">
-                    əlaqə saxlayın →
-                  </p>
-                </div>
-
-                <ul className="space-y-2.5 flex-1 mb-6">
-                  {pkg.features.map((f) => (
-                    <li
-                      key={f}
-                      className="flex items-start gap-2 text-[11.5px] text-amber-300/80"
-                    >
-                      <Check className="w-3.5 h-3.5 text-amber-400 mt-0.5 flex-shrink-0" />
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <motion.a
-                  href="#elaqe"
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  className={`group flex items-center justify-center gap-1.5 py-2.5 text-sm font-bold rounded-xl transition-colors ${
+                <motion.div
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  transition={{ duration: 0.2 }}
+                  className={`relative flex flex-col p-6 rounded-[10px] h-full ${
                     pkg.popular
-                      ? 'bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-900/30'
-                      : 'bg-white/[0.06] hover:bg-white/[0.1] text-white/55 hover:text-white border border-white/[0.08]'
+                      ? 'bg-gradient-to-b from-purple-900/30 to-black/60 shadow-xl shadow-purple-900/15'
+                      : 'bg-[#04040a]'
                   }`}
                 >
-                  Qiymət al
-                  <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                </motion.a>
-              </motion.div>
+                  {pkg.popular && (
+                    <div className="absolute -top-px left-10 right-10 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
+                  )}
+                  <div className="mb-5">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <h3 className="text-xl font-black text-white">{pkg.name}</h3>
+                      {pkg.popular && (
+                        <span className="text-[10px] font-bold text-purple-300 bg-purple-500/20 px-2 py-0.5 rounded-full border border-purple-500/20">
+                          Populyar
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-white/30 text-sm">{pkg.subtitle}</p>
+                  </div>
+                  <div className="mb-5 pb-5 border-b border-white/[0.05]">
+                    <p className="text-white/40 text-sm font-semibold">Qiymət üçün</p>
+                    <p className="text-white/20 text-xs mt-0.5">əlaqə saxlayın →</p>
+                  </div>
+                  <ul className="space-y-2.5 flex-1 mb-5">
+                    {pkg.features.map((f) => (
+                      <li key={f} className="flex items-start gap-2 text-[11.5px] text-amber-300/80">
+                        <Check className="w-3.5 h-3.5 text-amber-400 mt-0.5 flex-shrink-0" />
+                        <span>{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <motion.a
+                    href="#elaqe"
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    className={`group flex items-center justify-center gap-1.5 py-2.5 text-sm font-bold rounded-xl transition-colors ${
+                      pkg.popular
+                        ? 'bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-900/30'
+                        : 'bg-white/[0.06] hover:bg-white/[0.1] text-white/55 hover:text-white border border-white/[0.08]'
+                    }`}
+                  >
+                    Qiymət al
+                    <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  </motion.a>
+                </motion.div>
               </div>
-            </FadeUp>
-          ))}
-        </div>
+            ))}
+          />
+        </FadeUp>
       </div>
     </section>
   );
@@ -1603,6 +1688,7 @@ export default function Home() {
         <Contact />
         <MapSection />
         <Footer />
+        {loaded && <ThemeToggle />}
       </motion.main>
     </>
   );

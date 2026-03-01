@@ -100,3 +100,24 @@ body {
   background-size: 200% 100%;
   animation: shimmer 2.5s infinite;
 }
+
+/* ─── LIGHT MODE ────────────────────────────────────────── */
+/* CSS invert trick: cheaply converts dark theme to light    */
+html[data-theme="light"] {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Re-invert media (images/video/iframes) so they look normal */
+html[data-theme="light"] img,
+html[data-theme="light"] video,
+html[data-theme="light"] iframe {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Hide the scrollbar webkit track flash in light mode */
+html[data-theme="light"] ::-webkit-scrollbar-track {
+  background: #f5f4ff;
+}
+html[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: #7c3aed;
+}
