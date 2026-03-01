@@ -4,7 +4,6 @@ import {
   useState,
   useEffect,
   useRef,
-  useId,
   type MouseEvent as RMouseEvent,
 } from 'react';
 import Lenis from '@studio-freight/lenis';
@@ -277,64 +276,13 @@ const MARQUEE_2 = [
 // ─────────────────────────────────────────────────────────────────
 
 function LogoMark({ className = 'w-9 h-9' }: { className?: string }) {
-  const uid = useId().replace(/:/g, '_');
-  const g1 = `lg1_${uid}`;
-  const g2 = `lg2_${uid}`;
-
   return (
-    <svg
-      viewBox="0 0 200 178"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-    >
-      {/* A letter — dark navy, evenodd cutout creates the inner triangle */}
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M16 166 L90 8 L164 166 H140 L90 38 L40 166 Z
-           M56 122 L90 34 L124 122 Z"
-        fill="#1C1A8E"
-      />
-
-      {/* Main swoosh arc — sweeps from lower-left across and up to the right */}
-      <path
-        d="M10 120 C32 84 76 62 128 72 C156 77 174 62 183 46"
-        stroke={`url(#${g1})`}
-        strokeWidth="12"
-        strokeLinecap="round"
-        fill="none"
-      />
-
-      {/* End curl of the swoosh */}
-      <path
-        d="M177 40 C187 32 194 44 186 55"
-        stroke={`url(#${g2})`}
-        strokeWidth="9"
-        strokeLinecap="round"
-        fill="none"
-      />
-
-      <defs>
-        <linearGradient
-          id={g1}
-          x1="10" y1="120" x2="183" y2="46"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop offset="0%"   stopColor="#4C1D95" />
-          <stop offset="45%"  stopColor="#7C3AED" />
-          <stop offset="100%" stopColor="#A78BFA" />
-        </linearGradient>
-        <linearGradient
-          id={g2}
-          x1="177" y1="40" x2="186" y2="55"
-          gradientUnits="userSpaceOnUse"
-        >
-          <stop offset="0%"   stopColor="#A78BFA" />
-          <stop offset="100%" stopColor="#C4B5FD" stopOpacity="0.2" />
-        </linearGradient>
-      </defs>
-    </svg>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/logo.png"
+      alt="Alhezars Group"
+      className={`${className} object-contain`}
+    />
   );
 }
 
@@ -583,55 +531,67 @@ function ThemeToggle() {
 // ─────────────────────────────────────────────────────────────────
 
 function LoadingScreen({ onDone }: { onDone: () => void }) {
-  // Use a timer — never rely on onAnimationComplete for dismissal
-  // (it fires immediately when there's no entrance animation on the root div)
   useEffect(() => {
-    const t = setTimeout(onDone, 2200);
+    const t = setTimeout(onDone, 2900);
     return () => clearTimeout(t);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const name = 'ALHEZARS GROUP';
+
   return (
     <motion.div
-      exit={{ opacity: 0, y: -8 }}
-      transition={{ duration: 0.5, ease: EASE }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.7, ease: EASE }}
       className="fixed inset-0 z-[200] bg-[#04040a] flex flex-col items-center justify-center"
     >
-      {/* Logo appears */}
+      {/* Ambient glow */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="w-[560px] h-[560px] rounded-full bg-purple-950/35 blur-[130px]" />
+      </div>
+
+      {/* Logo */}
       <motion.div
-        initial={{ scale: 0.6, opacity: 0 }}
+        initial={{ scale: 0.65, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.45, ease: EASE }}
-        className="mb-7"
+        transition={{ duration: 0.6, ease: EASE }}
+        className="mb-9 relative z-10"
       >
-        <LogoMark className="w-16 h-16" />
+        <LogoMark className="w-[76px] h-[76px]" />
       </motion.div>
 
-      {/* Progress line fills in */}
+      {/* Divider line — expands from center */}
       <motion.div
-        initial={{ width: 0, opacity: 0 }}
-        animate={{ width: 140, opacity: 1 }}
-        transition={{ delay: 0.35, duration: 1.3, ease: EASE }}
-        className="h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent"
+        initial={{ scaleX: 0, opacity: 0 }}
+        animate={{ scaleX: 1, opacity: 1 }}
+        transition={{ delay: 0.4, duration: 0.9, ease: EASE }}
+        className="w-[200px] h-px bg-gradient-to-r from-transparent via-purple-500/55 to-transparent mb-8 relative z-10"
+        style={{ transformOrigin: 'center' }}
       />
 
-      {/* Label */}
-      <motion.p
-        initial={{ opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.55, duration: 0.4 }}
-        className="mt-5 text-[11px] text-white/45 uppercase tracking-[0.35em] font-black"
-      >
-        Alhezars Group
-      </motion.p>
+      {/* Company name — letters appear with stagger */}
+      <div className="flex items-center relative z-10" style={{ gap: '0.06em' }}>
+        {name.split('').map((char, i) => (
+          <motion.span
+            key={i}
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: char === ' ' ? 0 : 1, y: 0 }}
+            transition={{ delay: 0.52 + i * 0.05, duration: 0.38, ease: EASE }}
+            className="text-[13px] font-black text-white/75 tracking-[0.38em]"
+            style={{ display: 'inline-block', minWidth: char === ' ' ? '0.75em' : undefined }}
+          >
+            {char}
+          </motion.span>
+        ))}
+      </div>
 
       {/* Tagline */}
       <motion.p
-        initial={{ opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8, duration: 0.4 }}
-        className="mt-1.5 text-[9px] text-white/18 uppercase tracking-[0.3em]"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.6, duration: 0.7 }}
+        className="mt-4 text-[8px] text-white/20 uppercase tracking-[0.55em] relative z-10"
       >
-        Təqdim edir
+        Rəqəmsal brendiniz üçün
       </motion.p>
     </motion.div>
   );
@@ -1116,26 +1076,17 @@ function SocialPackages() {
         <FadeUp>
           <PackageCarousel
             cardWidth="w-[272px]"
-            cards={SOCIAL_PACKAGES.map((pkg, i) => (
-              <div key={pkg.name} className="relative rounded-2xl p-[1.5px] h-full">
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: pkg.popular ? 4 : 9 + i * 2, repeat: Infinity, ease: 'linear' }}
-                  className="absolute inset-0 rounded-2xl pointer-events-none"
-                  style={{
-                    background: `conic-gradient(from 0deg, transparent 0%, ${pkg.popular ? '#7c3aed' : 'rgba(139,92,246,0.55)'} 30%, transparent 55%)`,
-                    opacity: pkg.popular ? 1 : 0.5,
-                  }}
-                />
-                <motion.div
-                  whileHover={{ y: -8, scale: 1.02 }}
-                  transition={{ duration: 0.2 }}
-                  className={`relative flex flex-col rounded-[10px] overflow-hidden h-full ${
-                    pkg.popular
-                      ? 'bg-gradient-to-b from-purple-900/35 to-black/70 shadow-2xl shadow-purple-900/20'
-                      : 'bg-[#04040a]'
-                  }`}
-                >
+            cards={SOCIAL_PACKAGES.map((pkg) => (
+              <motion.div
+                key={pkg.name}
+                whileHover={{ y: -8, scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+                className={`relative flex flex-col rounded-2xl overflow-hidden h-full border ${
+                  pkg.popular
+                    ? 'bg-gradient-to-b from-purple-900/35 to-black/70 shadow-2xl shadow-purple-900/20 border-purple-500/30'
+                    : 'bg-[#04040a] border-white/[0.06]'
+                }`}
+              >
                   {pkg.popular && (
                     <motion.div
                       animate={{ opacity: [0.6, 1, 0.6] }}
@@ -1192,8 +1143,7 @@ function SocialPackages() {
                       <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                     </motion.a>
                   </div>
-                </motion.div>
-              </div>
+              </motion.div>
             ))}
           />
         </FadeUp>
@@ -1233,26 +1183,17 @@ function WebPackages() {
         <FadeUp>
           <PackageCarousel
             cardWidth="w-[290px]"
-            cards={WEB_PACKAGES.map((pkg, i) => (
-              <div key={pkg.name} className="relative rounded-2xl p-[1.5px] h-full">
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: pkg.popular ? 5 : 11 + i * 2, repeat: Infinity, ease: 'linear' }}
-                  className="absolute inset-0 rounded-2xl pointer-events-none"
-                  style={{
-                    background: `conic-gradient(from 0deg, transparent 0%, ${pkg.popular ? '#7c3aed' : 'rgba(139,92,246,0.55)'} 30%, transparent 55%)`,
-                    opacity: pkg.popular ? 1 : 0.45,
-                  }}
-                />
-                <motion.div
-                  whileHover={{ y: -8, scale: 1.02 }}
-                  transition={{ duration: 0.2 }}
-                  className={`relative flex flex-col p-6 rounded-[10px] h-full ${
-                    pkg.popular
-                      ? 'bg-gradient-to-b from-purple-900/30 to-black/60 shadow-xl shadow-purple-900/15'
-                      : 'bg-[#04040a]'
-                  }`}
-                >
+            cards={WEB_PACKAGES.map((pkg) => (
+              <motion.div
+                key={pkg.name}
+                whileHover={{ y: -8, scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+                className={`relative flex flex-col p-6 rounded-2xl h-full border ${
+                  pkg.popular
+                    ? 'bg-gradient-to-b from-purple-900/30 to-black/60 shadow-xl shadow-purple-900/15 border-purple-500/30'
+                    : 'bg-[#04040a] border-white/[0.06]'
+                }`}
+              >
                   {pkg.popular && (
                     <div className="absolute -top-px left-10 right-10 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
                   )}
@@ -1292,8 +1233,7 @@ function WebPackages() {
                     Qiymət al
                     <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                   </motion.a>
-                </motion.div>
-              </div>
+              </motion.div>
             ))}
           />
         </FadeUp>
