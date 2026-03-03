@@ -6,6 +6,8 @@ import {
   useRef,
   type MouseEvent as RMouseEvent,
 } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 import Lenis from '@studio-freight/lenis';
 import {
   motion,
@@ -17,7 +19,6 @@ import {
   useInView,
 } from 'framer-motion';
 import {
-  Check,
   ChevronRight,
   ArrowRight,
   Menu,
@@ -31,6 +32,12 @@ import {
   MapPin,
   Sun,
   Moon,
+  Star,
+  ChevronDown,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+  Send,
 } from 'lucide-react';
 
 // ─────────────────────────────────────────────────────────────────
@@ -38,175 +45,6 @@ import {
 // ─────────────────────────────────────────────────────────────────
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
-
-const SOCIAL_PACKAGES = [
-  {
-    name: 'XS',
-    subtitle: 'Başlanğıc',
-    contentCount: 20,
-    price: 700,
-    popular: false,
-    features: [
-      '2 mobilograf çəkilişi',
-      '10 story (manual)',
-      '1 videoqraf çəkilişi',
-      '2 qrafik dizayn post',
-      '5 professional foto',
-      'Targeting xidməti',
-      'Sosial portfoliya nəzarət',
-    ],
-  },
-  {
-    name: 'S',
-    subtitle: 'Böyümə',
-    contentCount: 40,
-    price: 1290,
-    popular: false,
-    features: [
-      '5 mobilograf çəkilişi',
-      '5 motion post',
-      '13 story',
-      '2 videoqraf xidməti',
-      'Targeting',
-      '5 qrafik dizayn post',
-      '10 kamera ilə foto',
-      'Kontent plan',
-      'Logo dizayn',
-      'Bioqrafiya & Highlights',
-    ],
-  },
-  {
-    name: 'M',
-    subtitle: 'Ən Populyar',
-    contentCount: 90,
-    price: 1890,
-    popular: true,
-    features: [
-      '10 mobilograf çəkilişi',
-      '10 motion post',
-      '33 story',
-      '4 videoqraf xidməti',
-      '2 AI video (Süni intellekt)',
-      '1 Bloger çəkilişi',
-      'Targeting',
-      '10 qrafik dizayn post',
-      'Kontent plan',
-      'Logo dizayn',
-      'Bioqrafiya & Highlights',
-    ],
-  },
-  {
-    name: 'L',
-    subtitle: 'Professional',
-    contentCount: 140,
-    price: 3300,
-    popular: false,
-    features: [
-      '15 mobilograf çəkilişi',
-      '15 motion post',
-      '47 story',
-      '7 videoqraf xidməti',
-      '3 AI video',
-      '3 Bloger çəkilişi',
-      'Targeting',
-      '20 qrafik dizayn post',
-      'Website dizayn',
-      'Logo dizayn',
-      'Bioqrafiya & Highlights',
-    ],
-  },
-  {
-    name: 'XL',
-    subtitle: 'Korporativ',
-    contentCount: 184,
-    price: 5790,
-    popular: false,
-    features: [
-      '20 mobilograf çəkilişi',
-      '15 motion post',
-      '60 story',
-      '10 videoqraf çəkilişi',
-      '5 AI video',
-      '4 Bloger çəkilişi',
-      'Targeting',
-      '30 qrafik dizayn post',
-      '40 professional foto',
-      'Website + SEO',
-      'Event təşkili (50 nəfər)',
-      'Bioqrafiya & Highlights',
-    ],
-  },
-];
-
-const WEB_PACKAGES = [
-  {
-    name: 'Basic',
-    subtitle: 'Rəqəmsal Başlanğıc',
-    popular: false,
-    features: [
-      '5 səhifəlik korporativ sayt',
-      'Mobil uyğun dizayn',
-      '2 dil dəstəyi',
-      'Domain + Hosting (1 il)',
-      'SSL sertifikatı',
-      'WhatsApp & Google Maps',
-      'Əsas SEO qurulumu',
-      'Google Analytics 4',
-      '1 ay texniki dəstək',
-    ],
-  },
-  {
-    name: 'Orta',
-    subtitle: 'Görünürlük & Etibar',
-    popular: true,
-    features: [
-      'Basic + hər şey',
-      '10 səhifəlik xüsusi dizayn',
-      '3 dil dəstəyi',
-      'Admin panel & Blog',
-      'Logo + rəng + tipoqrafiya',
-      'On-Page SEO',
-      '4 SEO blog məqaləsi',
-      'Google & Meta Ads',
-      '1 aylıq reklam idarəçiliyi',
-      '2 ay texniki dəstək',
-    ],
-  },
-  {
-    name: 'Premium',
-    subtitle: 'Rəqəmsal Böyümə',
-    popular: false,
-    features: [
-      'Orta + hər şey',
-      '20 səhifə UI/UX dizayn',
-      '5 dil dəstəyi',
-      'Chatbot inteqrasiyası',
-      '50 məhsullu e-ticarət',
-      'Tam brend kimliyi',
-      '8 SEO məqaləsi',
-      'CRO & Funnel sistemi',
-      'CRM inteqrasiyası',
-      '3 ay texniki dəstək',
-    ],
-  },
-  {
-    name: 'Premium Plus',
-    subtitle: 'Rəqəmsal Ekosistem',
-    popular: false,
-    features: [
-      'Premium + hər şey',
-      'Xüsusi yazılım & veb',
-      'ERP/CRM inteqrasiyası',
-      'Brand book & guideline',
-      '360° SEO strategiyası',
-      'Multi-kanal reklam',
-      'A/B test sistemi',
-      'Satış dashboard',
-      'Aylıq C-Level hesabat',
-      '6 ay texniki dəstək',
-    ],
-  },
-];
 
 const SERVICES = [
   {
@@ -271,17 +109,91 @@ const MARQUEE_2 = [
   'Motion Dizayn', 'Targetinq', 'E-ticarət', 'Mobiloqraf', 'AI Video',
 ];
 
+const TESTIMONIALS = [
+  {
+    name: 'Leyla H.',
+    role: 'Butik mağaza sahibəsi',
+    initials: 'LH',
+    color: 'from-violet-600 to-purple-800',
+    stars: 5,
+    text: 'M paketinə keçdikdən sonra 3 ay içərisində Instagram səhifəmizin izləyici sayı 3 dəfə artdı. Kontent keyfiyyəti gözləntilərimi üstələdi.',
+  },
+  {
+    name: 'Rauf M.',
+    role: 'Restoran sahibi',
+    initials: 'RM',
+    color: 'from-fuchsia-600 to-pink-800',
+    stars: 5,
+    text: 'Hər ay 90 kontent vəd etdilər, verdilər də. Targeting ilə doğru auditoriyaya çatdıq — rezervasiyalar əhəmiyyətli dərəcədə artdı.',
+  },
+  {
+    name: 'Nigar S.',
+    role: 'Estetik klinika meneceri',
+    initials: 'NS',
+    color: 'from-blue-600 to-indigo-800',
+    stars: 5,
+    text: 'Web dizayn layihəmiz 10 gün ərzində tamamlandı. Sayt həm görünüş, həm sürət baxımından əla — müştərilərimiz mütəmadi olaraq bəyənir.',
+  },
+  {
+    name: 'Tural B.',
+    role: 'İnşaat şirkəti direktoru',
+    initials: 'TB',
+    color: 'from-emerald-600 to-teal-800',
+    stars: 5,
+    text: 'SEO xidməti sayəsində 4 ay içərisində Google-da üst sıralara çıxdıq. Organik müştəri sayımız 3 dəfə artdı. Nəticə danışır.',
+  },
+];
+
+const FAQ_ITEMS = [
+  {
+    q: 'Minimum müqavilə müddəti neçədir?',
+    a: 'Heç bir minimum öhdəlik yoxdur. Bütün paketlər aylıq ödənişlidir — istəsəniz istənilən vaxt dayandıra bilərsiniz. Biz nəticə ilə sizi saxlamağa çalışırıq, şərt ilə yox.',
+  },
+  {
+    q: 'Reklam büdcəsi paketə daxildirmi?',
+    a: 'Xeyr. Paket qiymətinə idarəetmə, kontent istehsalı və targeting xidməti daxildir. Reklam üçün ayrılacaq büdcə (Google Ads, Meta Ads) müştəri tərəfindən ayrıca qarşılanır.',
+  },
+  {
+    q: 'Xidmətə nə tez başlaya bilərik?',
+    a: 'İlk müzakirə görüşündən sonra 48 saat ərzində başlayırıq. Görüşdə brendinizi tanıyır, hədəfləri müəyyənləşdiririk və kontent planını formalaşdırırıq.',
+  },
+  {
+    q: 'Nəticələri nə vaxt görəcəyik?',
+    a: 'Sosial mediada 1-2 ay ərzində əhəmiyyətli artım müşahidə edilir. SEO xidmətlərində isə axtarış motorlarının indeksləmə sürətindən asılı olaraq 3-6 ay ərzində nəticə görünür.',
+  },
+  {
+    q: 'Paket ortasında dəyişdirmək mümkündür?',
+    a: 'Bəli, istənilən vaxt paketi yuxarı və ya aşağı dəyişdirə bilərsiniz. Dəyişiklik növbəti ay üçün qüvvəyə minir. Fərqli ehtiyaclarınız olarsa, bizi birbaşa məlumatlandırın.',
+  },
+  {
+    q: 'Aylıq hesabat verirsinizmi?',
+    a: 'Bəli. Hər ayın sonunda izləyici artımı, reach, engagement rate, reklam nəticələri və əsas KPI-ları əks etdirən detallı analitika hesabatı göndərilir.',
+  },
+];
+
+const NAV_SECTIONS = [
+  { id: 'hero',         label: 'Ana səhifə' },
+  { id: 'xidmetler',   label: 'Xidmətlər' },
+  { id: 'proses',      label: 'Proses' },
+  { id: 'testimonials',label: 'Rəylər' },
+  { id: 'faq',         label: 'FAQ' },
+  { id: 'haqqimizda',  label: 'Haqqımızda' },
+  { id: 'elaqe',       label: 'Əlaqə' },
+];
+
 // ─────────────────────────────────────────────────────────────────
 // SMALL UTILITIES
 // ─────────────────────────────────────────────────────────────────
 
-function LogoMark({ className = 'w-9 h-9' }: { className?: string }) {
+function LogoMark({ width = 36, height = 36, className = '' }: { width?: number; height?: number; className?: string }) {
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <Image
       src="/logo.png"
       alt="Alhezars Group"
-      className={`${className} object-contain`}
+      width={width}
+      height={height}
+      className={`object-contain ${className}`}
+      priority
     />
   );
 }
@@ -391,102 +303,119 @@ function ProgressBar() {
 }
 
 // ─────────────────────────────────────────────────────────────────
-// PACKAGE CAROUSEL
+// MAGNETIC BUTTON
 // ─────────────────────────────────────────────────────────────────
 
-function PackageCarousel({
-  cards,
-  cardWidth = 'w-[272px]',
+function MagneticButton({
+  children,
+  className = '',
+  strength = 0.35,
 }: {
-  cards: React.ReactNode[];
-  cardWidth?: string;
+  children: React.ReactNode;
+  className?: string;
+  strength?: number;
 }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [idx, setIdx] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const dragStartX = useRef(0);
-  const dragScrollStart = useRef(0);
-  const count = cards.length;
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springX = useSpring(x, { stiffness: 200, damping: 18 });
+  const springY = useSpring(y, { stiffness: 200, damping: 18 });
 
-  // Auto-advance every 3.2 s
-  useEffect(() => {
-    if (paused) return;
-    const id = setInterval(() => setIdx((c) => (c + 1) % count), 3200);
-    return () => clearInterval(id);
-  }, [paused, count]);
+  function onMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (!ref.current) return;
+    const rect = ref.current.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    x.set((e.clientX - cx) * strength);
+    y.set((e.clientY - cy) * strength);
+  }
 
-  // Scroll to active card
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const card = el.children[idx] as HTMLElement;
-    if (card) el.scrollTo({ left: card.offsetLeft - 16, behavior: 'smooth' });
-  }, [idx]);
-
-  // Mouse drag support
-  const onMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setPaused(true);
-    dragStartX.current = e.clientX;
-    dragScrollStart.current = scrollRef.current?.scrollLeft ?? 0;
-  };
-  const onMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !scrollRef.current) return;
-    scrollRef.current.scrollLeft = dragScrollStart.current - (e.clientX - dragStartX.current);
-  };
-  const onMouseUp = (e: React.MouseEvent) => {
-    if (!isDragging) return;
-    setIsDragging(false);
-    const dx = e.clientX - dragStartX.current;
-    if (dx < -60) setIdx((c) => Math.min(count - 1, c + 1));
-    else if (dx > 60) setIdx((c) => Math.max(0, c - 1));
-    setTimeout(() => setPaused(false), 4000);
-  };
+  function onMouseLeave() {
+    x.set(0);
+    y.set(0);
+  }
 
   return (
-    <div className="relative">
-      {/* Scroll track */}
-      <div
-        ref={scrollRef}
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseUp={onMouseUp}
-        onMouseLeave={() => { setIsDragging(false); }}
-        onMouseEnter={() => setPaused(true)}
-        onTouchStart={() => setPaused(true)}
-        onTouchEnd={() => setTimeout(() => setPaused(false), 4000)}
-        className="flex gap-4 overflow-x-auto pb-4 px-1 select-none"
-        style={{
-          scrollSnapType: 'x mandatory',
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none',
-          cursor: isDragging ? 'grabbing' : 'grab',
-        }}
-      >
-        {cards.map((card, i) => (
-          <div
-            key={i}
-            className={`flex-shrink-0 ${cardWidth}`}
-            style={{ scrollSnapAlign: 'start' }}
-          >
-            {card}
-          </div>
-        ))}
-      </div>
+    <motion.div
+      ref={ref}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={{ x: springX, y: springY }}
+      className={`magnetic-btn inline-block ${className}`}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
-      {/* Dot pagination */}
-      <div className="flex justify-center gap-1.5 mt-5">
-        {cards.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => { setIdx(i); setPaused(true); setTimeout(() => setPaused(false), 5000); }}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
-              i === idx ? 'w-5 bg-purple-500' : 'w-1.5 bg-white/20'
-            }`}
+// ─────────────────────────────────────────────────────────────────
+// SECTION INDICATOR (side nav dots)
+// ─────────────────────────────────────────────────────────────────
+
+function SectionIndicator() {
+  const [active, setActive] = useState('hero');
+  const [hovered, setHovered] = useState<string | null>(null);
+
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+
+    NAV_SECTIONS.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActive(id);
+        },
+        { threshold: 0.4 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
+  }, []);
+
+  function scrollTo(id: string) {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  return (
+    <div className="fixed right-5 top-1/2 -translate-y-1/2 z-[80] hidden lg:flex flex-col items-end gap-3">
+      {NAV_SECTIONS.map(({ id, label }) => (
+        <div key={id} className="relative flex items-center gap-2 group">
+          {/* Tooltip label */}
+          <AnimatePresence>
+            {hovered === id && (
+              <motion.span
+                initial={{ opacity: 0, x: 8 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 8 }}
+                transition={{ duration: 0.18 }}
+                className="absolute right-6 whitespace-nowrap text-[10px] font-semibold text-white/50 bg-black/60 backdrop-blur-sm px-2 py-1 rounded-md border border-white/[0.07] pointer-events-none"
+              >
+                {label}
+              </motion.span>
+            )}
+          </AnimatePresence>
+
+          {/* Dot */}
+          <motion.button
+            onClick={() => scrollTo(id)}
+            onMouseEnter={() => setHovered(id)}
+            onMouseLeave={() => setHovered(null)}
+            animate={
+              active === id
+                ? { scale: 1.6, backgroundColor: 'rgba(139,92,246,1)' }
+                : { scale: 1, backgroundColor: 'rgba(255,255,255,0.15)' }
+            }
+            transition={{ duration: 0.25 }}
+            className="w-1.5 h-1.5 rounded-full cursor-pointer"
+            aria-label={label}
           />
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -532,7 +461,7 @@ function ThemeToggle() {
 
 function LoadingScreen({ onDone }: { onDone: () => void }) {
   useEffect(() => {
-    const t = setTimeout(onDone, 2900);
+    const t = setTimeout(onDone, 2200);
     return () => clearTimeout(t);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -556,7 +485,7 @@ function LoadingScreen({ onDone }: { onDone: () => void }) {
         transition={{ duration: 0.6, ease: EASE }}
         className="mb-9 relative z-10"
       >
-        <LogoMark className="w-[76px] h-[76px]" />
+        <LogoMark width={76} height={76} />
       </motion.div>
 
       {/* Divider line — expands from center */}
@@ -588,7 +517,7 @@ function LoadingScreen({ onDone }: { onDone: () => void }) {
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.6, duration: 0.7 }}
+        transition={{ delay: 1.4, duration: 0.7 }}
         className="mt-4 text-[8px] text-white/20 uppercase tracking-[0.55em] relative z-10"
       >
         Rəqəmsal brendiniz üçün
@@ -604,6 +533,8 @@ function LoadingScreen({ onDone }: { onDone: () => void }) {
 function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [pkgOpen, setPkgOpen] = useState(false);
+  const [mobilePkgOpen, setMobilePkgOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -613,7 +544,6 @@ function Navbar() {
 
   const links = [
     { label: 'Xidmətlər', href: '#xidmetler' },
-    { label: 'Paketlər', href: '#paketler' },
     { label: 'Proses', href: '#proses' },
     { label: 'Haqqımızda', href: '#haqqimizda' },
   ];
@@ -632,7 +562,7 @@ function Navbar() {
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2.5 group">
+          <a href="#hero" className="flex items-center gap-2.5 group">
             <LogoMark />
             <span className="text-[17px] font-bold tracking-tight">
               <span className="text-white">Alhezars</span>
@@ -642,6 +572,44 @@ function Navbar() {
 
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-7">
+            {/* Paketlər dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setPkgOpen(true)}
+              onMouseLeave={() => setPkgOpen(false)}
+            >
+              <button className="relative flex items-center gap-1 text-sm text-white/40 hover:text-white transition-colors duration-200">
+                Paketlər
+                <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${pkgOpen ? 'rotate-180' : ''}`} />
+              </button>
+              <AnimatePresence>
+                {pkgOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.97 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-52 bg-black/90 backdrop-blur-2xl border border-white/[0.07] rounded-xl overflow-hidden p-1.5 shadow-xl shadow-black/50"
+                  >
+                    <Link
+                      href="/paketler/sosial-media"
+                      className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg hover:bg-white/[0.06] text-white/55 hover:text-white transition-colors text-sm"
+                    >
+                      <Instagram className="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0" />
+                      Sosial Media
+                    </Link>
+                    <Link
+                      href="/paketler/web-dizayn"
+                      className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg hover:bg-white/[0.06] text-white/55 hover:text-white transition-colors text-sm"
+                    >
+                      <Globe className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
+                      Web Dizayn
+                    </Link>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             {links.map((l) => (
               <a
                 key={l.label}
@@ -655,21 +623,46 @@ function Navbar() {
           </div>
 
           {/* CTA */}
-          <motion.a
-            href="#elaqe"
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.97 }}
-            className="hidden md:flex items-center gap-1.5 px-5 py-2.5 text-sm font-bold bg-purple-700 hover:bg-purple-600 text-white rounded-full transition-colors duration-200 shadow-lg shadow-purple-900/30"
-          >
-            Başlayaq <ArrowRight className="w-3.5 h-3.5" />
-          </motion.a>
+          <MagneticButton>
+            <motion.a
+              href="#elaqe"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              className="hidden md:flex items-center gap-1.5 px-5 py-2.5 text-sm font-bold bg-purple-700 hover:bg-purple-600 text-white rounded-full transition-colors duration-200 shadow-lg shadow-purple-900/30"
+            >
+              Başlayaq <ArrowRight className="w-3.5 h-3.5" />
+            </motion.a>
+          </MagneticButton>
 
-          <button
+          <motion.button
             onClick={() => setOpen(!open)}
+            whileTap={{ scale: 0.9 }}
             className="md:hidden p-2 text-white/50 hover:text-white transition-colors"
           >
-            {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
+            <AnimatePresence mode="wait" initial={false}>
+              {open ? (
+                <motion.span
+                  key="x"
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <X className="w-5 h-5" />
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="menu"
+                  initial={{ rotate: 90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <Menu className="w-5 h-5" />
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </motion.button>
         </div>
       </div>
 
@@ -684,23 +677,71 @@ function Navbar() {
             className="md:hidden overflow-hidden bg-black/95 backdrop-blur-2xl border-b border-white/[0.05]"
           >
             <div className="px-5 py-4 flex flex-col">
-              {links.map((l) => (
-                <a
+              {/* Paketlər accordion */}
+              <div>
+                <motion.button
+                  onClick={() => setMobilePkgOpen(!mobilePkgOpen)}
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0, duration: 0.2 }}
+                  className="flex items-center justify-between w-full py-3 text-sm text-white/55 hover:text-white border-b border-white/[0.04] transition-colors"
+                >
+                  Paketlər
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${mobilePkgOpen ? 'rotate-180' : ''}`} />
+                </motion.button>
+                <AnimatePresence>
+                  {mobilePkgOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      <Link
+                        href="/paketler/sosial-media"
+                        onClick={() => setOpen(false)}
+                        className="flex items-center gap-2 py-2.5 pl-4 text-sm text-white/40 hover:text-white border-b border-white/[0.04] transition-colors"
+                      >
+                        <Instagram className="w-3.5 h-3.5 text-fuchsia-400" />
+                        Sosial Media
+                      </Link>
+                      <Link
+                        href="/paketler/web-dizayn"
+                        onClick={() => setOpen(false)}
+                        className="flex items-center gap-2 py-2.5 pl-4 text-sm text-white/40 hover:text-white border-b border-white/[0.04] transition-colors"
+                      >
+                        <Globe className="w-3.5 h-3.5 text-blue-400" />
+                        Web Dizayn
+                      </Link>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {links.map((l, i) => (
+                <motion.a
                   key={l.label}
                   href={l.href}
                   onClick={() => setOpen(false)}
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: (i + 1) * 0.06, duration: 0.2 }}
                   className="py-3 text-sm text-white/55 hover:text-white border-b border-white/[0.04] last:border-0 transition-colors"
                 >
                   {l.label}
-                </a>
+                </motion.a>
               ))}
-              <a
+              <motion.a
                 href="#elaqe"
                 onClick={() => setOpen(false)}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
                 className="mt-4 block text-center py-3 text-sm font-bold bg-purple-700 text-white rounded-full"
               >
                 Başlayaq
-              </a>
+              </motion.a>
             </div>
           </motion.div>
         )}
@@ -774,6 +815,7 @@ function Hero() {
 
   return (
     <section
+      id="hero"
       ref={heroRef}
       onMouseMove={onMouseMove}
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16"
@@ -808,7 +850,7 @@ function Hero() {
             transition={{ duration: 2, repeat: Infinity }}
             className="w-1.5 h-1.5 rounded-full bg-purple-400"
           />
-          Bakı əsaslı tam spektrli rəqəmsal agentlik
+          Bakıda bütün xidmətləri özündə cəmləşdirən agentlik
         </motion.div>
 
         {/* Headline */}
@@ -844,23 +886,27 @@ function Hero() {
           transition={{ delay: 1.05, duration: 0.55, ease: EASE }}
           className="flex flex-col sm:flex-row gap-3.5 justify-center items-center"
         >
-          <motion.a
-            href="#paketler"
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
-            className="group flex items-center gap-2 px-8 py-4 text-sm font-black bg-purple-700 hover:bg-purple-600 text-white rounded-full shadow-2xl shadow-purple-900/40 transition-colors"
-          >
-            Paketlərə bax
-            <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-          </motion.a>
-          <motion.a
-            href="#elaqe"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.97 }}
-            className="flex items-center gap-2 px-8 py-4 text-sm font-semibold text-white/50 hover:text-white border border-white/[0.1] hover:border-white/[0.2] rounded-full transition-all"
-          >
-            Bizimlə əlaqə
-          </motion.a>
+          <MagneticButton>
+            <motion.a
+              href="/paketler/sosial-media"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
+              className="group flex items-center gap-2 px-8 py-4 text-sm font-black bg-purple-700 hover:bg-purple-600 text-white rounded-full shadow-2xl shadow-purple-900/40 transition-colors"
+            >
+              Paketlərə bax
+              <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+            </motion.a>
+          </MagneticButton>
+          <MagneticButton>
+            <motion.a
+              href="#elaqe"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              className="flex items-center gap-2 px-8 py-4 text-sm font-semibold text-white/50 hover:text-white border border-white/[0.1] hover:border-white/[0.2] rounded-full transition-all"
+            >
+              Bizimlə əlaqə
+            </motion.a>
+          </MagneticButton>
         </motion.div>
 
         {/* Stats with counter animation */}
@@ -1051,191 +1097,164 @@ function Process() {
 }
 
 // ─────────────────────────────────────────────────────────────────
-// SOCIAL PACKAGES
+// TESTIMONIALS
 // ─────────────────────────────────────────────────────────────────
 
-function SocialPackages() {
+function Testimonials() {
   return (
-    <section id="paketler" className="py-28 relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-950/8 to-transparent pointer-events-none" />
+    <section id="testimonials" className="py-28 relative overflow-hidden">
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-900/6 rounded-full blur-[200px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <FadeUp className="text-center mb-16">
           <p className="text-purple-400 text-xs font-bold uppercase tracking-[0.25em] mb-4">
-            Sosial Media
+            Müştəri Rəyləri
           </p>
-          <h2 className="text-[clamp(32px,5vw,52px)] font-black text-white mb-5">
-            Sosial Media Paketləri
+          <h2 className="text-[clamp(32px,5vw,52px)] font-black text-white mb-5 leading-tight">
+            Onlar Danışır,
+            <br />
+            <span className="text-white/20">Nəticə Sübut Edir</span>
           </h2>
-          <p className="text-white/30 max-w-lg mx-auto">
-            Brendinizin ölçüsünə uyğun aylıq kontent istehsalı, sosial media
-            idarəçiliyi və targeting xidmətləri.
+          <p className="text-white/30 max-w-md mx-auto leading-relaxed">
+            Brendlər üçün dəyər yaradan hər layihə arxasında real nəticələr var.
           </p>
         </FadeUp>
 
-        <FadeUp>
-          <PackageCarousel
-            cardWidth="w-[272px]"
-            cards={SOCIAL_PACKAGES.map((pkg) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {TESTIMONIALS.map((t, i) => (
+            <FadeUp key={t.name} delay={i * 0.1}>
               <motion.div
-                key={pkg.name}
-                whileHover={{ y: -8, scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-                className={`relative flex flex-col rounded-2xl overflow-hidden h-full border ${
-                  pkg.popular
-                    ? 'bg-gradient-to-b from-purple-900/35 to-black/70 shadow-2xl shadow-purple-900/20 border-purple-500/30'
-                    : 'bg-[#04040a] border-white/[0.06]'
-                }`}
+                whileHover={{ y: -6, borderColor: 'rgba(139,92,246,0.2)' }}
+                transition={{ duration: 0.25 }}
+                className="flex flex-col p-5 rounded-2xl bg-white/[0.025] border border-white/[0.06] cursor-default h-full"
               >
-                  {pkg.popular && (
+                {/* Stars */}
+                <div className="flex gap-0.5 mb-4">
+                  {Array.from({ length: t.stars }).map((_, si) => (
                     <motion.div
-                      animate={{ opacity: [0.6, 1, 0.6] }}
-                      transition={{ duration: 2.5, repeat: Infinity }}
-                      className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-500 to-transparent"
-                    />
-                  )}
-                  {pkg.popular && (
-                    <motion.div
-                      animate={{ opacity: [0, 0.08, 0] }}
-                      transition={{ duration: 3.5, repeat: Infinity }}
-                      className="absolute inset-0 shimmer pointer-events-none"
-                    />
-                  )}
-                  <div className="p-5 flex-1">
-                    <div className="flex items-start justify-between mb-1">
-                      <h3 className="text-2xl font-black text-white">{pkg.name}</h3>
-                      {pkg.popular && (
-                        <motion.span
-                          animate={{ opacity: [0.75, 1, 0.75] }}
-                          transition={{ duration: 2, repeat: Infinity }}
-                          className="text-[10px] font-bold text-purple-300 bg-purple-500/20 px-2 py-0.5 rounded-full border border-purple-500/20"
-                        >
-                          Populyar
-                        </motion.span>
-                      )}
-                    </div>
-                    <p className="text-white/30 text-xs mb-5">{pkg.contentCount} kontent/ay</p>
-                    <div className="flex items-end gap-1 mb-6">
-                      <span className="text-3xl font-black text-white leading-none">{pkg.price.toLocaleString()}</span>
-                      <span className="text-white/35 text-sm mb-0.5">₼/ay</span>
-                    </div>
-                    <ul className="space-y-2">
-                      {pkg.features.map((f) => (
-                        <li key={f} className="flex items-start gap-2 text-[11.5px] text-amber-300/80">
-                          <Check className="w-3.5 h-3.5 text-amber-400 mt-0.5 flex-shrink-0" />
-                          <span>{f}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="p-5 pt-0">
-                    <motion.a
-                      href="#elaqe"
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                      className={`group flex items-center justify-center gap-1.5 py-2.5 text-sm font-bold rounded-xl transition-colors ${
-                        pkg.popular
-                          ? 'bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-900/30'
-                          : 'bg-white/[0.06] hover:bg-white/[0.1] text-white/55 hover:text-white'
-                      }`}
+                      key={si}
+                      initial={{ opacity: 0, scale: 0 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.1 + si * 0.07, ease: EASE }}
                     >
-                      Başlayaq
-                      <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                    </motion.a>
-                  </div>
-              </motion.div>
-            ))}
-          />
-        </FadeUp>
+                      <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                    </motion.div>
+                  ))}
+                </div>
 
-        <FadeUp delay={0.2} className="text-center mt-6">
-          <p className="text-white/15 text-xs">
-            Bütün paketlər aylıq ödənişli. Reklam büdcəsi ayrıca müştəri
-            tərəfindən qarşılanır.
-          </p>
-        </FadeUp>
+                {/* Text */}
+                <p className="text-white/40 text-[13px] leading-relaxed flex-1 mb-5">
+                  &ldquo;{t.text}&rdquo;
+                </p>
+
+                {/* Author */}
+                <div className="flex items-center gap-3">
+                  <div className={`w-9 h-9 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center flex-shrink-0`}>
+                    <span className="text-[11px] font-black text-white">{t.initials}</span>
+                  </div>
+                  <div>
+                    <div className="text-white text-sm font-bold leading-none">{t.name}</div>
+                    <div className="text-white/25 text-[11px] mt-0.5">{t.role}</div>
+                  </div>
+                </div>
+              </motion.div>
+            </FadeUp>
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
 // ─────────────────────────────────────────────────────────────────
-// WEB PACKAGES
+// FAQ
 // ─────────────────────────────────────────────────────────────────
 
-function WebPackages() {
+function FAQ() {
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
+
   return (
-    <section className="py-28 relative">
-      <div className="max-w-7xl mx-auto px-5 sm:px-8">
+    <section id="faq" className="py-28 relative">
+      <div className="max-w-3xl mx-auto px-5 sm:px-8">
         <FadeUp className="text-center mb-16">
           <p className="text-purple-400 text-xs font-bold uppercase tracking-[0.25em] mb-4">
-            Web Xidmətlər
+            Tez-tez Soruşulan
           </p>
-          <h2 className="text-[clamp(32px,5vw,52px)] font-black text-white mb-5">
-            Web Dizayn Paketləri
+          <h2 className="text-[clamp(32px,5vw,52px)] font-black text-white mb-5 leading-tight">
+            Suallarınıza
+            <br />
+            <span className="text-white/20">Cavablarımız</span>
           </h2>
-          <p className="text-white/30 max-w-lg mx-auto">
-            Sadə saytdan tam rəqəmsal ekosisteməqədər — brendinizin ehtiyacına
-            uyğun xüsusi web həllər.
-          </p>
         </FadeUp>
 
-        <FadeUp>
-          <PackageCarousel
-            cardWidth="w-[290px]"
-            cards={WEB_PACKAGES.map((pkg) => (
-              <motion.div
-                key={pkg.name}
-                whileHover={{ y: -8, scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-                className={`relative flex flex-col p-6 rounded-2xl h-full border ${
-                  pkg.popular
-                    ? 'bg-gradient-to-b from-purple-900/30 to-black/60 shadow-xl shadow-purple-900/15 border-purple-500/30'
-                    : 'bg-[#04040a] border-white/[0.06]'
-                }`}
-              >
-                  {pkg.popular && (
-                    <div className="absolute -top-px left-10 right-10 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
-                  )}
-                  <div className="mb-5">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <h3 className="text-xl font-black text-white">{pkg.name}</h3>
-                      {pkg.popular && (
-                        <span className="text-[10px] font-bold text-purple-300 bg-purple-500/20 px-2 py-0.5 rounded-full border border-purple-500/20">
-                          Populyar
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-white/30 text-sm">{pkg.subtitle}</p>
-                  </div>
-                  <div className="mb-5 pb-5 border-b border-white/[0.05]">
-                    <p className="text-white/40 text-sm font-semibold">Qiymət üçün</p>
-                    <p className="text-white/20 text-xs mt-0.5">əlaqə saxlayın →</p>
-                  </div>
-                  <ul className="space-y-2.5 flex-1 mb-5">
-                    {pkg.features.map((f) => (
-                      <li key={f} className="flex items-start gap-2 text-[11.5px] text-amber-300/80">
-                        <Check className="w-3.5 h-3.5 text-amber-400 mt-0.5 flex-shrink-0" />
-                        <span>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <motion.a
-                    href="#elaqe"
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    className={`group flex items-center justify-center gap-1.5 py-2.5 text-sm font-bold rounded-xl transition-colors ${
-                      pkg.popular
-                        ? 'bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-900/30'
-                        : 'bg-white/[0.06] hover:bg-white/[0.1] text-white/55 hover:text-white border border-white/[0.08]'
-                    }`}
+        <div className="space-y-3">
+          {FAQ_ITEMS.map((item, i) => {
+            const isOpen = openIdx === i;
+            return (
+              <FadeUp key={i} delay={i * 0.07}>
+                <motion.div
+                  animate={{
+                    borderColor: isOpen
+                      ? 'rgba(139,92,246,0.3)'
+                      : 'rgba(255,255,255,0.06)',
+                    backgroundColor: isOpen
+                      ? 'rgba(139,92,246,0.06)'
+                      : 'rgba(255,255,255,0.025)',
+                  }}
+                  transition={{ duration: 0.2 }}
+                  className="rounded-2xl border overflow-hidden"
+                >
+                  {/* Header */}
+                  <button
+                    onClick={() => setOpenIdx(isOpen ? null : i)}
+                    className="w-full flex items-center justify-between px-5 py-4 text-left"
                   >
-                    Qiymət al
-                    <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                  </motion.a>
-              </motion.div>
-            ))}
-          />
+                    <span className="text-white/80 font-semibold text-sm pr-4">
+                      {item.q}
+                    </span>
+                    <motion.div
+                      animate={{ rotate: isOpen ? 180 : 0 }}
+                      transition={{ duration: 0.25, ease: EASE }}
+                      className="flex-shrink-0"
+                    >
+                      <ChevronDown className="w-4 h-4 text-purple-400" />
+                    </motion.div>
+                  </button>
+
+                  {/* Answer */}
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        key="content"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: EASE }}
+                        className="faq-content"
+                      >
+                        <div className="px-5 pb-5">
+                          <div className="w-full h-px bg-white/[0.06] mb-4" />
+                          <p className="text-white/35 text-sm leading-relaxed">
+                            {item.a}
+                          </p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              </FadeUp>
+            );
+          })}
+        </div>
+
+        <FadeUp delay={0.3} className="text-center mt-10">
+          <p className="text-white/20 text-sm">
+            Başqa sualınız var?{' '}
+            <a href="#elaqe" className="text-purple-400 hover:text-purple-300 transition-colors underline underline-offset-2">
+              Bizimlə əlaqə saxlayın
+            </a>
+          </p>
         </FadeUp>
       </div>
     </section>
@@ -1252,6 +1271,7 @@ function About() {
     { icon: '🤖', title: 'AI Video', desc: 'Süni intellektlə hazırlanan kontent — rəqiblərinizdən bir addım öndə' },
     { icon: '🎯', title: 'Targeting & Reklam', desc: 'Google, Meta — doğru adam, doğru vaxt, doğru mesaj' },
     { icon: '🌐', title: 'Tam Brend Kimliyi', desc: 'Logo, sayt, rəng paleti — brendinizin hər tərəfi bir əldə' },
+    { icon: '🌟', title: 'İnfluencer Marketinq', desc: 'Brendinizi doğru blogerlərlə birləşdiririk — hədəf auditoriyaya daha sürətli çatırsınız' },
   ];
 
   return (
@@ -1273,7 +1293,7 @@ function About() {
 
             <p className="text-white/40 leading-relaxed mb-5">
               <span className="text-white font-semibold">Alhezars Group</span>{' '}
-              2024-cü ildə Bakıda quruldu. Komandamızda mobiloqraf, videoqraf,
+              2026-cı ildə Bakıda quruldu. Komandamızda mobiloqraf, videoqraf,
               dizayner, developer və targetoloq var — bütün işi özümüz görürük,
               xarici tərəfdara vermədən.
             </p>
@@ -1337,7 +1357,9 @@ function About() {
                   key={item.title}
                   whileHover={{ y: -6, borderColor: 'rgba(139,92,246,0.25)' }}
                   transition={{ duration: 0.2 }}
-                  className="p-5 rounded-2xl bg-white/[0.025] border border-white/[0.06] cursor-default"
+                  className={`p-5 rounded-2xl bg-white/[0.025] border border-white/[0.06] cursor-default ${
+                    i === highlights.length - 1 && highlights.length % 2 !== 0 ? 'col-span-2' : ''
+                  }`}
                 >
                   <motion.div
                     animate={{ y: [0, -4, 0] }}
@@ -1370,7 +1392,40 @@ function About() {
 // CONTACT / CTA
 // ─────────────────────────────────────────────────────────────────
 
+type FormStatus = 'idle' | 'loading' | 'success' | 'error';
+
 function Contact() {
+  const [form, setForm] = useState({
+    name: '', email: '', phone: '', pkg: '', message: '',
+  });
+  const [status, setStatus] = useState<FormStatus>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setStatus('loading');
+    setErrorMsg('');
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Xəta baş verdi.');
+      setStatus('success');
+      setForm({ name: '', email: '', phone: '', pkg: '', message: '' });
+    } catch (err) {
+      setStatus('error');
+      setErrorMsg(err instanceof Error ? err.message : 'Xəta baş verdi.');
+      setTimeout(() => setStatus('idle'), 4000);
+    }
+  }
+
+  const inputCls =
+    'w-full bg-white/[0.04] border border-white/[0.08] rounded-xl px-4 py-3 text-sm text-white placeholder-white/20 focus:outline-none focus:border-purple-500/50 focus:bg-white/[0.06] transition-all duration-200';
+
   return (
     <section id="elaqe" className="py-28 relative overflow-hidden">
       {/* Pulsing glow */}
@@ -1380,8 +1435,8 @@ function Contact() {
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-700 rounded-full blur-[220px] pointer-events-none"
       />
 
-      <div className="relative max-w-4xl mx-auto px-5 sm:px-8 text-center">
-        <FadeUp>
+      <div className="relative max-w-5xl mx-auto px-5 sm:px-8">
+        <FadeUp className="text-center mb-14">
           <p className="text-purple-400 text-xs font-bold uppercase tracking-[0.25em] mb-5">
             Başlayaq
           </p>
@@ -1398,32 +1453,217 @@ function Contact() {
               doğru paket sizi gözləyir
             </motion.span>
           </h2>
-          <p className="text-white/30 text-lg mb-12 max-w-xl mx-auto leading-relaxed">
-            Bizimlə əlaqə saxlayın, ehtiyaclarınızı müzakirə edək və brendiniz
-            üçün ən uyğun həlli birlikdə tapaq.
+          <p className="text-white/30 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
+            Aşağıdakı formu doldurun və ya birbaşa əlaqə saxlayın.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <motion.a
-              href="https://wa.me/994XXXXXXXXX"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.96 }}
-              className="flex items-center justify-center gap-2.5 px-9 py-4 text-sm font-black bg-purple-700 hover:bg-purple-600 text-white rounded-full shadow-2xl shadow-purple-900/40 transition-colors"
-            >
-              <Phone className="w-4 h-4" />
-              WhatsApp ilə yazın
-            </motion.a>
-            <motion.a
-              href="mailto:info@alhezars.com"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              className="flex items-center justify-center gap-2.5 px-9 py-4 text-sm font-semibold text-white/50 hover:text-white border border-white/[0.1] hover:border-white/[0.2] rounded-full transition-all"
-            >
-              <Mail className="w-4 h-4" />
-              E-poçt göndərin
-            </motion.a>
+          {/* Quick contact buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-14">
+            <MagneticButton>
+              <motion.a
+                href="https://wa.me/994104219406"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.96 }}
+                className="flex items-center justify-center gap-2.5 px-9 py-4 text-sm font-black bg-purple-700 hover:bg-purple-600 text-white rounded-full shadow-2xl shadow-purple-900/40 transition-colors"
+              >
+                <Phone className="w-4 h-4" />
+                WhatsApp ilə yazın
+              </motion.a>
+            </MagneticButton>
+            <MagneticButton>
+              <motion.a
+                href="mailto:info@alhezars.com"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="flex items-center justify-center gap-2.5 px-9 py-4 text-sm font-semibold text-white/50 hover:text-white border border-white/[0.1] hover:border-white/[0.2] rounded-full transition-all"
+              >
+                <Mail className="w-4 h-4" />
+                E-poçt göndərin
+              </motion.a>
+            </MagneticButton>
           </div>
+        </FadeUp>
 
+        {/* Divider */}
+        <FadeUp delay={0.1}>
+          <div className="flex items-center gap-4 mb-10">
+            <div className="flex-1 h-px bg-white/[0.05]" />
+            <span className="text-white/20 text-xs uppercase tracking-widest font-semibold">və ya form doldurun</span>
+            <div className="flex-1 h-px bg-white/[0.05]" />
+          </div>
+        </FadeUp>
+
+        {/* Contact Form */}
+        <FadeUp delay={0.15}>
+          <AnimatePresence mode="wait">
+            {status === 'success' ? (
+              <motion.div
+                key="success"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="flex flex-col items-center justify-center py-16 text-center"
+              >
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                  className="w-16 h-16 rounded-full bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center mb-5"
+                >
+                  <CheckCircle2 className="w-8 h-8 text-emerald-400" />
+                </motion.div>
+                <h3 className="text-white font-black text-2xl mb-2">Müraciətiniz alındı!</h3>
+                <p className="text-white/35 text-sm max-w-sm">
+                  Ən qısa zamanda sizinlə əlaqə saxlayacağıq. WhatsApp-dan da yaza bilərsiniz.
+                </p>
+                <button
+                  onClick={() => setStatus('idle')}
+                  className="mt-6 text-purple-400 text-sm hover:text-purple-300 transition-colors underline underline-offset-2"
+                >
+                  Yenidən müraciət et
+                </button>
+              </motion.div>
+            ) : (
+              <motion.form
+                key="form"
+                onSubmit={handleSubmit}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+              >
+                <div>
+                  <label className="block text-white/40 text-xs font-semibold mb-1.5 uppercase tracking-wider">
+                    Ad Soyad *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Adınız Soyadınız"
+                    value={form.name}
+                    onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                    className={inputCls}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-white/40 text-xs font-semibold mb-1.5 uppercase tracking-wider">
+                    Email *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="email@example.com"
+                    value={form.email}
+                    onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                    className={inputCls}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-white/40 text-xs font-semibold mb-1.5 uppercase tracking-wider">
+                    Telefon
+                  </label>
+                  <input
+                    type="tel"
+                    placeholder="+994 XX XXX XX XX"
+                    value={form.phone}
+                    onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+                    className={inputCls}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-white/40 text-xs font-semibold mb-1.5 uppercase tracking-wider">
+                    Maraq duyulan paket
+                  </label>
+                  <select
+                    value={form.pkg}
+                    onChange={(e) => setForm((f) => ({ ...f, pkg: e.target.value }))}
+                    className={`${inputCls} appearance-none`}
+                  >
+                    <option value="" className="bg-[#0a0a14]">Seçin (istəyə bağlı)</option>
+                    <optgroup label="Sosial Media" className="bg-[#0a0a14]">
+                      <option value="XS">XS — 700 ₼/ay</option>
+                      <option value="S">S — 1.290 ₼/ay</option>
+                      <option value="M">M — 1.890 ₼/ay (Populyar)</option>
+                      <option value="L">L — 3.300 ₼/ay</option>
+                      <option value="XL">XL — 5.790 ₼/ay</option>
+                    </optgroup>
+                    <optgroup label="Web Dizayn" className="bg-[#0a0a14]">
+                      <option value="Web Basic">Web Basic</option>
+                      <option value="Web Orta">Web Orta</option>
+                      <option value="Web Premium">Web Premium</option>
+                      <option value="Web Premium Plus">Web Premium Plus</option>
+                    </optgroup>
+                    <option value="Fərdi" className="bg-[#0a0a14]">Fərdi təklif</option>
+                  </select>
+                </div>
+
+                <div className="sm:col-span-2">
+                  <label className="block text-white/40 text-xs font-semibold mb-1.5 uppercase tracking-wider">
+                    Mesaj *
+                  </label>
+                  <textarea
+                    required
+                    rows={4}
+                    placeholder="Brendiniz, hədəfləriniz və ya suallarınız haqqında qısa məlumat verin..."
+                    value={form.message}
+                    onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
+                    className={`${inputCls} resize-none`}
+                  />
+                </div>
+
+                {/* Error message */}
+                <AnimatePresence>
+                  {status === 'error' && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="sm:col-span-2 flex items-center gap-2 text-red-400 text-sm"
+                    >
+                      <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                      {errorMsg}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <div className="sm:col-span-2 flex items-center justify-between gap-4 pt-2">
+                  <p className="text-white/15 text-xs">
+                    * Mütləq sahələr
+                  </p>
+                  <MagneticButton>
+                    <motion.button
+                      type="submit"
+                      disabled={status === 'loading'}
+                      whileHover={status !== 'loading' ? { scale: 1.04 } : {}}
+                      whileTap={status !== 'loading' ? { scale: 0.97 } : {}}
+                      className="flex items-center gap-2 px-8 py-3.5 text-sm font-black bg-purple-700 hover:bg-purple-600 disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-full shadow-xl shadow-purple-900/30 transition-colors"
+                    >
+                      {status === 'loading' ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Göndərilir...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="w-4 h-4" />
+                          Müraciət et
+                        </>
+                      )}
+                    </motion.button>
+                  </MagneticButton>
+                </div>
+              </motion.form>
+            )}
+          </AnimatePresence>
+        </FadeUp>
+
+        {/* Address */}
+        <FadeUp delay={0.2} className="mt-12">
           <div className="flex items-center justify-center gap-6 text-white/20 text-xs">
             <span className="flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5 text-purple-600/50" />
@@ -1495,14 +1735,14 @@ function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 mb-14">
           <div className="md:col-span-5">
             <div className="flex items-center gap-2.5 mb-5">
-              <LogoMark className="w-8 h-8" />
+              <LogoMark width={32} height={32} />
               <span className="text-[17px] font-black">
                 <span className="text-white">Alhezars</span>
                 <span className="text-purple-400"> Group</span>
               </span>
             </div>
             <p className="text-white/22 text-sm leading-relaxed max-w-xs">
-              Bakı əsaslı tam spektrli rəqəmsal agentlik. Brendinizin rəqəmsal
+              Bakıda bütün xidmətləri özündə cəmləşdirən agentlik. Brendinizin rəqəmsal
               gələcəyini birlikdə inşa edirik.
             </p>
             <p className="text-white/12 text-xs mt-4">www.alhezars.com</p>
@@ -1534,7 +1774,7 @@ function Footer() {
             <ul className="space-y-3">
               {[
                 { l: 'Haqqımızda', h: '#haqqimizda' },
-                { l: 'Paketlər', h: '#paketler' },
+                { l: 'Paketlər', h: '/paketler/sosial-media' },
                 { l: 'Proses', h: '#proses' },
                 { l: 'Əlaqə', h: '#elaqe' },
               ].map((item) => (
@@ -1622,13 +1862,14 @@ export default function Home() {
         <MarqueeBand />
         <Services />
         <Process />
-        <SocialPackages />
-        <WebPackages />
+        <Testimonials />
+        <FAQ />
         <About />
         <Contact />
         <MapSection />
         <Footer />
         {loaded && <ThemeToggle />}
+        {loaded && <SectionIndicator />}
       </motion.main>
     </>
   );
