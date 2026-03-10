@@ -21,7 +21,7 @@ export const SOCIAL_PACKAGES: SocialPackage[] = [
     name: 'XS',
     subtitle: 'Başlanğıc',
     contentCount: 20,
-    price: 700,
+    price: 790,
     popular: false,
     goldenFeatures: [],
     features: [
