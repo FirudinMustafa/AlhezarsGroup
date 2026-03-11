@@ -235,7 +235,6 @@ function LogoParticles() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (window.innerWidth < 768) return;
     const obs = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) { setReady(true); obs.disconnect(); }
     }, { threshold: 0.1 });
@@ -253,7 +252,8 @@ function LogoParticles() {
 
     loadLogoShape().then((pts) => {
       if (cancelled) return;
-      const N = 1800;
+      const isMobile = window.innerWidth < 768;
+      const N = isMobile ? 700 : 1800;
       let W = 0, H = 0;
       const px = new Float32Array(N), py = new Float32Array(N);
       const vx = new Float32Array(N), vy = new Float32Array(N);
@@ -380,13 +380,47 @@ function LogoParticles() {
   );
 }
 
-function DesktopOnlyParticles() {
-  const [isDesktop, setIsDesktop] = useState(false);
+function AllDevicesParticles() {
+  const [mounted, setMounted] = useState(false);
   useEffect(() => {
-    setIsDesktop(window.innerWidth >= 768);
+    setMounted(true);
   }, []);
-  if (!isDesktop) return null;
+  if (!mounted) return null;
   return <LogoParticles />;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// COUNT-UP ANIMATION
+// ─────────────────────────────────────────────────────────────────
+
+function CountUp({ to, suffix = '', duration = 1800 }: { to: number; suffix?: string; duration?: number }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !started.current) {
+        started.current = true;
+        obs.disconnect();
+        const start = performance.now();
+        function frame(now: number) {
+          const progress = Math.min((now - start) / duration, 1);
+          // ease out cubic
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setCount(Math.round(eased * to));
+          if (progress < 1) requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      }
+    }, { threshold: 0.3 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [to, duration]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -759,8 +793,8 @@ function Hero() {
       {/* Grid */}
       <div className="absolute inset-0 grid-bg" />
 
-      {/* Logo particle animation background (desktop only — skipped on mobile for perf) */}
-      <DesktopOnlyParticles />
+      {/* Logo particle animation background */}
+      <AllDevicesParticles />
 
       {/* Static ambient orbs */}
       <div className="absolute top-[10%] left-[5%] w-[350px] h-[350px] md:w-[700px] md:h-[700px] bg-purple-700/12 rounded-full blur-[60px] md:blur-[160px] pointer-events-none" />
@@ -817,7 +851,7 @@ function Hero() {
           {HERO_STATS.map((s) => (
             <div key={s.label} className="text-center">
               <div className="text-[clamp(28px,4vw,40px)] font-black text-white">
-                {s.to}{s.suffix}
+                <CountUp to={s.to} suffix={s.suffix} />
               </div>
               <div className="text-[11px] text-white/25 mt-1.5 tracking-wide">
                 {s.label}
@@ -1148,7 +1182,7 @@ function About() {
                 <div key={s.label}>
                   <div className="p-4 rounded-xl bg-white/[0.025] border border-white/[0.05]">
                     <div className="text-2xl font-black text-white">
-                      {s.to}{s.suffix}
+                      <CountUp to={s.to} suffix={s.suffix} />
                     </div>
                     <div className="text-[11px] text-white/25 mt-1">
                       {s.label}

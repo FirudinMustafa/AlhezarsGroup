@@ -69,14 +69,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="az">
+    <html lang="az" style={{ background: '#04040a' }}>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${inter.className} bg-[#fbfbfd] text-[#1d1d1f] antialiased`}>
+      <body className={`${inter.className} bg-[#04040a] text-white antialiased`}>
         {children}
       </body>
     </html>
