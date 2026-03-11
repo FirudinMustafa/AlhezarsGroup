@@ -406,13 +406,12 @@ function CountUp({ to, suffix = '', duration = 1800 }: { to: number; suffix?: st
         started.current = true;
         obs.disconnect();
         const start = performance.now();
-        function frame(now: number) {
+        const frame = (now: number) => {
           const progress = Math.min((now - start) / duration, 1);
-          // ease out cubic
           const eased = 1 - Math.pow(1 - progress, 3);
           setCount(Math.round(eased * to));
           if (progress < 1) requestAnimationFrame(frame);
-        }
+        };
         requestAnimationFrame(frame);
       }
     }, { threshold: 0.3 });
