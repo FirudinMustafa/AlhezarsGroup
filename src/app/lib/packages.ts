@@ -1,8 +1,19 @@
+export type CurrencyKey = 'AZN' | 'TRY' | 'USD';
+
+export type Prices = Record<CurrencyKey, number>;
+
+export const CURRENCY_SYMBOLS: Record<CurrencyKey, string> = {
+  AZN: '₼',
+  TRY: '₺',
+  USD: '$',
+};
+
 export type SocialPackage = {
   name: string;
   subtitle: string;
   contentCount: number;
   price: number;
+  prices: Prices;
   popular: boolean;
   goldenFeatures: string[];
   features: string[];
@@ -14,6 +25,7 @@ export type WebPackage = {
   popular: boolean;
   goldenFeatures: string[];
   features: string[];
+  prices?: Prices;
 };
 
 export const SOCIAL_PACKAGES: SocialPackage[] = [
@@ -22,6 +34,7 @@ export const SOCIAL_PACKAGES: SocialPackage[] = [
     subtitle: 'Başlanğıc',
     contentCount: 20,
     price: 790,
+    prices: { AZN: 790, TRY: 20540, USD: 465 },
     popular: false,
     goldenFeatures: [],
     features: [
@@ -39,6 +52,7 @@ export const SOCIAL_PACKAGES: SocialPackage[] = [
     subtitle: 'Böyümə',
     contentCount: 40,
     price: 1290,
+    prices: { AZN: 1290, TRY: 33540, USD: 759 },
     popular: false,
     goldenFeatures: [],
     features: [
@@ -59,6 +73,7 @@ export const SOCIAL_PACKAGES: SocialPackage[] = [
     subtitle: 'Ən Populyar',
     contentCount: 90,
     price: 1890,
+    prices: { AZN: 1890, TRY: 49140, USD: 1112 },
     popular: true,
     goldenFeatures: ['2 AI video (Süni intellekt)', '1 Bloger çəkilişi'],
     features: [
@@ -80,6 +95,7 @@ export const SOCIAL_PACKAGES: SocialPackage[] = [
     subtitle: 'Professional',
     contentCount: 140,
     price: 3300,
+    prices: { AZN: 3300, TRY: 85800, USD: 1941 },
     popular: false,
     goldenFeatures: ['3 AI video', '3 Bloger çəkilişi', 'Website dizayn'],
     features: [
@@ -101,6 +117,7 @@ export const SOCIAL_PACKAGES: SocialPackage[] = [
     subtitle: 'Korporativ',
     contentCount: 184,
     price: 5790,
+    prices: { AZN: 5790, TRY: 150540, USD: 3406 },
     popular: false,
     goldenFeatures: [
       '5 AI video',

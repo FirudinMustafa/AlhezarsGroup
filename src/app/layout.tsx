@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
+import { LanguageProvider } from './lib/LanguageContext';
 import './globals.css';
 
 const inter = Inter({
@@ -78,7 +79,9 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.className} bg-[#04040a] text-white antialiased`}>
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
         <Analytics />
       </body>
     </html>
