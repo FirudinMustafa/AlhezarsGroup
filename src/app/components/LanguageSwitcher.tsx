@@ -5,10 +5,6 @@ import { ChevronDown } from 'lucide-react';
 import { useLanguage } from '../lib/LanguageContext';
 import { LOCALES } from '../lib/i18n';
 
-/**
- * `variant="dropdown"` — desktop navbar (default)
- * `variant="inline"`   — mobile menu (horizontal pill row)
- */
 export default function LanguageSwitcher({
   className = '',
   variant = 'dropdown',
@@ -17,8 +13,21 @@ export default function LanguageSwitcher({
   variant?: 'dropdown' | 'inline';
 }) {
   const { locale, setLocale, loading } = useLanguage();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const current = LOCALES.find((l) => l.code === locale)!;
 
-  /* ── Inline (mobile) ── */
+  useEffect(() => {
+    if (variant === 'inline') return;
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [variant]);
+
   if (variant === 'inline') {
     return (
       <div className={`flex items-center gap-1.5 ${className}`}>
@@ -39,21 +48,6 @@ export default function LanguageSwitcher({
       </div>
     );
   }
-
-  /* ── Dropdown (desktop) ── */
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const current = LOCALES.find((l) => l.code === locale)!;
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, []);
 
   return (
     <div ref={ref} className={`relative ${className}`}>
