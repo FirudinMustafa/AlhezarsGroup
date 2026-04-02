@@ -37,7 +37,6 @@ export const SOCIAL_PACKAGES: SocialPackage[] = [
     price: 1000,
     prices: { AZN: 1000, TRY: 26160, USD: 588 },
     popular: false,
-    hidden: true,
     goldenFeatures: [],
     features: [
       '2 mobilograf çəkilişi',
