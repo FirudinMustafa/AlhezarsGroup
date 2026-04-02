@@ -11,15 +11,13 @@ import { useLanguage } from '../../lib/LanguageContext';
 export default function SocialMediaPage() {
   const { t } = useLanguage();
 
-  // Build translated packages (skip hidden ones)
-  const packages = SOCIAL_PACKAGES
-    .map((pkg, i) => ({
-      ...pkg,
-      subtitle: t.socialPackages.subtitles[i],
-      features: t.socialPackages.features[i],
-      goldenFeatures: t.socialPackages.goldenFeatures[i],
-    }))
-    .filter((pkg) => !pkg.hidden);
+  // Build translated packages
+  const packages = SOCIAL_PACKAGES.map((pkg, i) => ({
+    ...pkg,
+    subtitle: t.socialPackages.subtitles[i],
+    features: t.socialPackages.features[i],
+    goldenFeatures: t.socialPackages.goldenFeatures[i],
+  }));
 
   const p = t.packagePage.socialMedia;
 
