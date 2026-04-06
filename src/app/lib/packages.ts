@@ -51,8 +51,8 @@ export const SOCIAL_PACKAGES: SocialPackage[] = [
     name: 'S',
     subtitle: 'Böyümə',
     contentCount: 40,
-    price: 1290,
-    prices: { AZN: 1290, TRY: 33750, USD: 759 },
+    price: 1490,
+    prices: { AZN: 1490, TRY: 39.000, USD: 876 },
     popular: false,
     goldenFeatures: [],
     features: [
