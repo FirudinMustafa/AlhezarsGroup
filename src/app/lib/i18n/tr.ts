@@ -201,20 +201,22 @@ const tr: Translations = {
   },
 
   socialPackages: {
-    subtitles: ['Başlangıç', 'Büyüme', 'En Popüler', 'Profesyonel', 'Kurumsal'],
+    subtitles: ['Başlangıç', 'Ekonomik', 'En Popüler', 'Geniş', 'Kurumsal', 'Tam Ekosistem'],
     features: [
-      ['2 mobilograf çekimi', '10 story (manuel)', '1 videocu çekimi', '2 grafik tasarım gönderi', '5 profesyonel fotoğraf', 'Targeting hizmeti', 'Sosyal portfolyo takibi'],
-      ['5 mobilograf çekimi', '5 motion gönderi', '13 story', '2 videocu hizmeti', 'Targeting', '5 grafik tasarım gönderi', '10 kamera ile fotoğraf', 'İçerik planı', 'Logo tasarım', 'Biyografi & Highlights'],
-      ['10 mobilograf çekimi', '10 motion gönderi', '33 story', '4 videocu hizmeti', '2 AI video (Yapay zeka)', '1 Fenomen çekimi', 'Targeting', '10 grafik tasarım gönderi', 'İçerik planı', 'Logo tasarım', 'Biyografi & Highlights'],
-      ['15 mobilograf çekimi', '15 motion gönderi', '47 story', '7 videocu hizmeti', '3 AI video', '3 Fenomen çekimi', 'Targeting', '20 grafik tasarım gönderi', 'Website tasarım', 'Logo tasarım', 'Biyografi & Highlights'],
-      ['20 mobilograf çekimi', '15 motion gönderi', '60 story', '10 videocu çekimi', '5 AI video', '4 Fenomen çekimi', 'Targeting', '30 grafik tasarım gönderi', '40 profesyonel fotoğraf', 'Website + SEO', 'Etkinlik organizasyonu (50 kişi)', 'Biyografi & Highlights'],
+      ['Sosyal Medya Yönetimi', '8 Grafik tasarım gönderisi', '4 Mobilograf çekimi', 'Aylık içerik planı', 'Aylık rapor'],
+      ['Sosyal Medya Yönetimi', '12 Grafik tasarım gönderisi', '5 Mobilograf çekimi', '2 Videocu çekimi', 'Aylık içerik planı', 'Rakip analizi', 'Aylık rapor ve analiz', 'Highlight tasarımı', 'Biyografi düzenlemesi'],
+      ['Sosyal Medya Yönetimi', '14 Grafik tasarım gönderisi', '10 Story', '4 Mobilograf çekimi', '4 Videocu çekimi', 'Targeting hizmeti', '1 AI video hazırlığı', 'İçerik planı', 'Rakip analizi', 'Aylık rapor ve analiz', 'Highlight tasarımı', 'Biyografi düzenlemesi'],
+      ['Sosyal Medya Yönetimi', '16 Grafik tasarım gönderisi', '5 Motion tasarım gönderisi', '10 Story', '6 Mobilograf çekimi', '4 Videocu çekimi', 'Targeting hizmeti', '2 Influencer yönetimi', '2 AI video hazırlığı', 'Kurumsal etkinlik organizasyonu', 'İçerik planı', 'Rakip analizi', 'Aylık rapor ve analiz', 'Highlight tasarımı', 'Biyografi düzenlemesi'],
+      ['Sosyal Medya Yönetimi', '18 Grafik tasarım gönderisi', '8 Motion tasarım gönderisi', '15 Story', '3 Mobilograf çekimi', '10 Videocu çekimi', 'Targeting hizmeti', '4 Influencer yönetimi', '3 AI video hazırlığı', 'Web sitesi tasarımı', 'Logo tasarımı', 'Kurumsal etkinlik organizasyonu', 'İçerik planı', 'Rakip analizi', 'Aylık rapor ve analiz', 'Highlight tasarımı', 'Biyografi düzenlemesi'],
+      ['Sosyal Medya Yönetimi', '22 Grafik tasarım gönderisi', '10 Motion tasarım gönderisi', '30 Story', '5 Mobilograf çekimi', '12 Videocu çekimi', 'Targeting hizmeti', '6 Influencer yönetimi', '5 AI video hazırlığı', 'Web sitesi tasarımı', 'Logo tasarımı', 'Kurumsal etkinlik organizasyonu', 'İçerik planı', 'Rakip analizi', 'Aylık rapor ve analiz', 'Highlight tasarımı', 'Biyografi düzenlemesi', 'Brandbook hazırlığı', 'Premium destek hizmeti', 'Kişisel markalaşma danışmanlığı'],
     ],
     goldenFeatures: [
       [],
-      [],
-      ['2 AI video (Yapay zeka)', '1 Fenomen çekimi'],
-      ['3 AI video', '3 Fenomen çekimi', 'Website tasarım'],
-      ['5 AI video', '4 Fenomen çekimi', 'Website + SEO', 'Etkinlik organizasyonu (50 kişi)'],
+      ['2 Videocu çekimi', 'Rakip analizi'],
+      ['Targeting hizmeti', '1 AI video hazırlığı'],
+      ['2 Influencer yönetimi', '2 AI video hazırlığı', 'Kurumsal etkinlik organizasyonu'],
+      ['4 Influencer yönetimi', '3 AI video hazırlığı', 'Web sitesi tasarımı', 'Logo tasarımı'],
+      ['6 Influencer yönetimi', '5 AI video hazırlığı', 'Web sitesi tasarımı', 'Brandbook hazırlığı', 'Premium destek hizmeti', 'Kişisel markalaşma danışmanlığı'],
     ],
   },
 
