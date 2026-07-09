@@ -21,16 +21,16 @@ const jsonLd = {
     'Bakıda bütün xidmətləri özündə cəmləşdirən agentlik. Kontent istehsalı, sosial media idarəçiliyi, web dizayn, SEO və reklam xidmətləri.',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'CV46+XHM, 5 Nadir Əliyev',
+    streetAddress: 'Shahrazad Rent Home, 21 Zərifə Əliyeva',
     addressLocality: 'Bakı',
     addressRegion: 'Bakı',
-    postalCode: '1075',
+    postalCode: '1000',
     addressCountry: 'AZ',
   },
   geo: {
     '@type': 'GeoCoordinates',
-    latitude: 40.4072505,
-    longitude: 49.8616858,
+    latitude: 40.3697,
+    longitude: 49.8371,
   },
   serviceArea: {
     '@type': 'GeoShape',

@@ -1331,7 +1331,7 @@ function Contact() {
           <div className="flex items-center justify-center gap-6 text-white/20 text-xs">
             <span className="flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5 text-purple-600/50" />
-              CV46+XHM, 5 Nadir Əliyev, Bakı 1075, Azerbaycan
+              Shahrazad Rent Home, 21 Zərifə Əliyeva, Bakı 1000, Azerbaycan
             </span>
             <span className="w-1 h-1 bg-white/10 rounded-full" />
             <span>www.alhezars.com</span>
@@ -1356,7 +1356,7 @@ function MapSection() {
             <MapPin className="w-4 h-4 text-purple-500 flex-shrink-0" />
             <div>
               <p className="text-white/55 text-sm font-semibold">
-                CV46+XHM, 5 Nadir Əliyev, Bakı 1075, Azerbaycan
+                Shahrazad Rent Home, 21 Zərifə Əliyeva, Bakı 1000, Azerbaycan
               </p>
               <p className="text-white/20 text-xs mt-0.5">{t.map.office}</p>
             </div>
@@ -1364,7 +1364,7 @@ function MapSection() {
 
           <div className="relative rounded-2xl overflow-hidden border border-white/[0.07] h-[300px] sm:h-[380px]">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3039.519469305576!2d49.8613062!3d40.4074623!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40307d00606cd875%3A0x63faa7de0ab3bbe3!2sAlhezars%20Group!5e0!3m2!1str!2saz!4v1730820000000!5m2!1str!2saz"
+              src="https://maps.google.com/maps?q=Shahrazad%20Rent%20Home%2C%2021%20Z%C9%99rif%C9%99%20%C6%8Fliyeva%2C%20Baku%201000%2C%20Azerbaijan&t=&z=16&ie=UTF8&iwloc=&output=embed"
               width="100%"
               height="100%"
               style={{
@@ -1374,7 +1374,7 @@ function MapSection() {
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title="Alhezars Group - Bakı, Nərimanov rayonu"
+              title="Alhezars Group — Shahrazad Rent Home, Zərifə Əliyeva, Bakı"
             />
 
             {/* Fade to page bg at bottom */}
@@ -1450,7 +1450,7 @@ function Footer() {
           <p className="text-white/15 text-xs">
             © {new Date().getFullYear()} Alhezars Group. {t.footer.rights}
           </p>
-          <p className="text-white/15 text-xs">CV46+XHM, 5 Nadir Əliyev, Bakı 1075, Azerbaycan</p>
+          <p className="text-white/15 text-xs">Shahrazad Rent Home, 21 Zərifə Əliyeva, Bakı 1000, Azerbaycan</p>
         </div>
       </div>
     </footer>
