@@ -549,15 +549,16 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb {
    ═════════════════ */
 @media (max-width: 767px) {
   :root {
-    --carousel-card-w: 260px;
-    --carousel-card-h: 480px;
+    --carousel-card-w: 268px;
+    --carousel-card-h: 500px;
     --carousel-radius: 340px;
   }
   .carousel-scene { margin-top: 1.5rem; margin-bottom: 2rem; }
   .card { padding: 22px 18px 18px; }
   .card-title { font-size: 1.15rem; }
-  .features-list { gap: 4px; margin-bottom: 8px; }
-  .features-list li { font-size: 0.76rem; }
+  .card-subtitle { margin-bottom: 6px; }
+  .features-list { gap: 3px; margin-bottom: 8px; }
+  .features-list li { font-size: 0.72rem; line-height: 1.18; }
   .price-btn { padding: 11px 22px; }
   .arrow-prev { left: 0.5rem; }
   .arrow-next { right: 0.5rem; }
@@ -568,11 +569,14 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb {
 }
 @media (max-width: 480px) {
   :root {
-    --carousel-card-w: 240px;
-    --carousel-card-h: 460px;
+    --carousel-card-w: 250px;
+    --carousel-card-h: 480px;
     --carousel-radius: 260px;
   }
-  .features-list li { font-size: 0.72rem; }
+  .card { padding: 20px 16px 16px; }
+  .features-list li { font-size: 0.7rem; line-height: 1.16; }
+  .price-btn { padding: 10px 20px; }
+  .price-num, .purple-price { font-size: 1.3rem; }
   .arrow-prev { left: 4px; }
   .arrow-next { right: 4px; }
   .arrow-btn { width: 36px; height: 36px; font-size: 0.9rem; }
