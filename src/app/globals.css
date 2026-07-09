@@ -162,7 +162,7 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb {
   --card-dark-bg:  rgba(12,18,50,0.9);
   --card-dark-bdr: rgba(59,130,246,0.22);
   --carousel-card-w:  280px;
-  --carousel-card-h:  440px;
+  --carousel-card-h:  500px;
   --carousel-radius:  440px;
 }
 
@@ -374,17 +374,30 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
   margin-bottom: 10px;
   padding: 0;
+  /* Fill the space between subtitle and price; scroll if the list is very
+     long (e.g. Premium Pro) so the price button below is never clipped. */
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.25) transparent;
+}
+.features-list::-webkit-scrollbar { width: 4px; }
+.features-list::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.22);
+  border-radius: 4px;
 }
 .features-list li {
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   color: rgba(255,255,255,0.85);
   display: flex;
   align-items: center;
   gap: 8px;
-  line-height: 1.25;
+  line-height: 1.2;
 }
 .features-list li::before {
   content: '';
@@ -418,6 +431,7 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb {
   align-self: flex-start;
   text-decoration: none;
   margin-top: auto;
+  flex-shrink: 0;
   transition: transform 0.22s cubic-bezier(0.23,1,0.32,1),
               box-shadow 0.22s ease;
 }
@@ -536,7 +550,7 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb {
 @media (max-width: 767px) {
   :root {
     --carousel-card-w: 260px;
-    --carousel-card-h: 420px;
+    --carousel-card-h: 480px;
     --carousel-radius: 340px;
   }
   .carousel-scene { margin-top: 1.5rem; margin-bottom: 2rem; }
@@ -555,7 +569,7 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb {
 @media (max-width: 480px) {
   :root {
     --carousel-card-w: 240px;
-    --carousel-card-h: 400px;
+    --carousel-card-h: 460px;
     --carousel-radius: 260px;
   }
   .features-list li { font-size: 0.72rem; }
