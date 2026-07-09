@@ -1157,7 +1157,7 @@ function Contact() {
                 {t.contact.whatsapp}
               </a>
                                       <a
-                href="mailto:info@alhezars.com"
+                href="mailto:alhezarsgroup@gmail.com"
                 className="flex items-center justify-center gap-2.5 px-9 py-4 text-sm font-semibold text-white/50 hover:text-white border border-white/[0.1] hover:border-white/[0.2] rounded-full transition-all"
               >
                 <Mail className="w-4 h-4" />
