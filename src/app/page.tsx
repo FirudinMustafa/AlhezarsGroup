@@ -305,11 +305,11 @@ function CountUp({ to, suffix = '', duration = 1800 }: { to: number; suffix?: st
 function LogoMark({ width = 36, height = 36, className = '' }: { width?: number; height?: number; className?: string }) {
   return (
     <Image
-      src="/alhezarsLogo.jpeg"
+      src="/alhezarsLogo.png"
       alt="Alhezars Group"
       width={width}
       height={height}
-      className={`object-contain rounded-lg ${className}`}
+      className={`object-contain ${className}`}
       priority
     />
   );
