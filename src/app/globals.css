@@ -273,6 +273,7 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb {
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .carousel-item {
@@ -282,6 +283,7 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb {
   margin-left: calc(var(--carousel-card-w) / -2);
   width: var(--carousel-card-w);
   height: var(--carousel-card-h);
+  will-change: transform, opacity;
 }
 
 /* ═════════════════
@@ -580,4 +582,22 @@ html[data-theme="light"] ::-webkit-scrollbar-thumb {
   .arrow-prev { left: 4px; }
   .arrow-next { right: 4px; }
   .arrow-btn { width: 36px; height: 36px; font-size: 0.9rem; }
+}
+
+/* ═════════════════
+   MOBILE PERFORMANCE (iOS Safari freeze mitigation)
+   Huge animated blur() blobs + backdrop-filter are very expensive on phones.
+   Shrink the blur, stop the blob animation, and drop backdrop-filter.
+   ═════════════════ */
+@media (max-width: 900px) {
+  .bg-blob { filter: blur(55px); animation: none; }
+  .blob-1 { width: 320px; height: 320px; }
+  .blob-2 { width: 360px; height: 360px; }
+  .blob-3 { width: 240px; height: 240px; }
+  .arrow-btn { backdrop-filter: none; background: rgba(12,18,50,0.92); }
+}
+
+/* Respect users who prefer reduced motion — no auto-spin, no blob float */
+@media (prefers-reduced-motion: reduce) {
+  .bg-blob { animation: none; }
 }

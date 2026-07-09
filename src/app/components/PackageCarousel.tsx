@@ -58,12 +58,18 @@ export default function PackageCarousel({
   const dragStartAngle = useRef(0);
   const rafId = useRef(0);
 
-  /* ── CSS variable radius ── */
-  const getRadius = useCallback(() => {
-    const raw = getComputedStyle(document.documentElement)
-      .getPropertyValue('--carousel-radius')
-      .trim();
-    return parseFloat(raw) || 440;
+  /* ── CSS variable radius (cached; recomputed on resize, NOT per-frame) ── */
+  const radiusRef = useRef(440);
+  useEffect(() => {
+    const readRadius = () => {
+      const raw = getComputedStyle(document.documentElement)
+        .getPropertyValue('--carousel-radius')
+        .trim();
+      radiusRef.current = parseFloat(raw) || 440;
+    };
+    readRadius();
+    window.addEventListener('resize', readRadius);
+    return () => window.removeEventListener('resize', readRadius);
   }, []);
 
   /* ── Price formatting ── */
@@ -102,17 +108,22 @@ export default function PackageCarousel({
     [anglePerItem, count],
   );
 
-  /* ── Animation loop ── */
+  /* ── Animation loop (paused off-screen / when tab hidden for iOS perf) ── */
   useEffect(() => {
     const carousel = carouselRef.current;
-    if (!carousel) return;
+    const scene = sceneRef.current;
+    if (!carousel || !scene) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let running = false;
+    let onScreen = true;
 
     const render = () => {
-      const radius = getRadius();
+      if (!running) return;
 
       if (!isDragging.current) {
-        /* Always auto-spin — pause on hover or after button click */
-        if (!isHovering.current && !isPaused.current) {
+        /* Auto-spin — pause on hover, after button click, or reduced-motion */
+        if (!isHovering.current && !isPaused.current && !reduceMotion) {
           targetAngle.current -= AUTO_SPEED;
         }
         currentAngle.current += (targetAngle.current - currentAngle.current) * EASE;
@@ -128,24 +139,57 @@ export default function PackageCarousel({
         setActive(idx);
       }
 
-      /* Per-item brightness + scale */
+      /* Per-item depth + fade — opacity instead of filter (far cheaper on iOS) */
+      const radius = radiusRef.current;
       for (let i = 0; i < count; i++) {
         const item = itemRefs.current[i];
         if (!item) continue;
         const itemAngle = ((anglePerItem * i + currentAngle.current) % 360 + 360) % 360;
         const diff = Math.min(itemAngle, 360 - itemAngle);
-        const brightness = 0.45 + 0.55 * (1 - diff / 180);
+        const opacity = 0.5 + 0.5 * (1 - diff / 180);
         const scale = 0.82 + 0.18 * (1 - diff / 180);
         item.style.transform = `rotateY(${anglePerItem * i}deg) translateZ(${radius}px) scale(${scale.toFixed(3)})`;
-        item.style.filter = `brightness(${brightness.toFixed(3)})`;
+        item.style.opacity = opacity.toFixed(3);
       }
 
       rafId.current = requestAnimationFrame(render);
     };
 
-    rafId.current = requestAnimationFrame(render);
-    return () => cancelAnimationFrame(rafId.current);
-  }, [count, anglePerItem, getRadius]);
+    const start = () => {
+      if (running) return;
+      running = true;
+      rafId.current = requestAnimationFrame(render);
+    };
+    const stop = () => {
+      running = false;
+      cancelAnimationFrame(rafId.current);
+    };
+
+    /* Only animate while the carousel is actually visible */
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        onScreen = entry.isIntersecting;
+        if (onScreen && !document.hidden) start();
+        else stop();
+      },
+      { threshold: 0.01 },
+    );
+    io.observe(scene);
+
+    const onVisibility = () => {
+      if (document.hidden) stop();
+      else if (onScreen) start();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
+    start();
+
+    return () => {
+      stop();
+      io.disconnect();
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
+  }, [count, anglePerItem]);
 
   /* ── Mouse & touch ── */
   useEffect(() => {
@@ -225,11 +269,11 @@ export default function PackageCarousel({
     const initAngle = -(initialIdx * anglePerItem);
     const itemAngle = ((anglePerItem * i + initAngle) % 360 + 360) % 360;
     const diff = Math.min(itemAngle, 360 - itemAngle);
-    const brightness = 0.45 + 0.55 * (1 - diff / 180);
+    const opacity = 0.5 + 0.5 * (1 - diff / 180);
     const scale = 0.82 + 0.18 * (1 - diff / 180);
     return {
       transform: `rotateY(${anglePerItem * i}deg) translateZ(var(--carousel-radius, 440px)) scale(${scale.toFixed(3)})`,
-      filter: `brightness(${brightness.toFixed(3)})`,
+      opacity: opacity.toFixed(3),
     };
   };
 
