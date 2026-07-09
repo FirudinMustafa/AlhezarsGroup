@@ -201,20 +201,22 @@ const en: Translations = {
   },
 
   socialPackages: {
-    subtitles: ['Starter', 'Growth', 'Most Popular', 'Professional', 'Corporate'],
+    subtitles: ['Starter', 'Economy', 'Most Popular', 'Extended', 'Corporate', 'Full Ecosystem'],
     features: [
-      ['2 mobile videography shoots', '10 stories (manual)', '1 videography shoot', '2 graphic design posts', '5 professional photos', 'Targeting service', 'Social portfolio management'],
-      ['5 mobile videography shoots', '5 motion posts', '13 stories', '2 videography services', 'Targeting', '5 graphic design posts', '10 camera photos', 'Content plan', 'Logo design', 'Bio & Highlights'],
-      ['10 mobile videography shoots', '10 motion posts', '33 stories', '4 videography services', '2 AI videos (Artificial intelligence)', '1 Influencer shoot', 'Targeting', '10 graphic design posts', 'Content plan', 'Logo design', 'Bio & Highlights'],
-      ['15 mobile videography shoots', '15 motion posts', '47 stories', '7 videography services', '3 AI videos', '3 Influencer shoots', 'Targeting', '20 graphic design posts', 'Website design', 'Logo design', 'Bio & Highlights'],
-      ['20 mobile videography shoots', '15 motion posts', '60 stories', '10 videography shoots', '5 AI videos', '4 Influencer shoots', 'Targeting', '30 graphic design posts', '40 professional photos', 'Website + SEO', 'Event management (50 guests)', 'Bio & Highlights'],
+      ['Social Media Management', '8 Graphic design posts', '4 Mobile videography shoots', 'Monthly content plan', 'Monthly report'],
+      ['Social Media Management', '12 Graphic design posts', '5 Mobile videography shoots', '2 Videography shoots', 'Monthly content plan', 'Competitor analysis', 'Monthly report and analysis', 'Highlight design', 'Bio setup'],
+      ['Social Media Management', '14 Graphic design posts', '10 Stories', '4 Mobile videography shoots', '4 Videography shoots', 'Targeting service', '1 AI video production', 'Content plan', 'Competitor analysis', 'Monthly report and analysis', 'Highlight design', 'Bio setup'],
+      ['Social Media Management', '16 Graphic design posts', '5 Motion design posts', '10 Stories', '6 Mobile videography shoots', '4 Videography shoots', 'Targeting service', '2 Influencer management', '2 AI video production', 'Corporate event organization', 'Content plan', 'Competitor analysis', 'Monthly report and analysis', 'Highlight design', 'Bio setup'],
+      ['Social Media Management', '18 Graphic design posts', '8 Motion design posts', '15 Stories', '3 Mobile videography shoots', '10 Videography shoots', 'Targeting service', '4 Influencer management', '3 AI video production', 'Website design', 'Logo design', 'Corporate event organization', 'Content plan', 'Competitor analysis', 'Monthly report and analysis', 'Highlight design', 'Bio setup'],
+      ['Social Media Management', '22 Graphic design posts', '10 Motion design posts', '30 Stories', '5 Mobile videography shoots', '12 Videography shoots', 'Targeting service', '6 Influencer management', '5 AI video production', 'Website design', 'Logo design', 'Corporate event organization', 'Content plan', 'Competitor analysis', 'Monthly report and analysis', 'Highlight design', 'Bio setup', 'Brandbook creation', 'Premium support service', 'Personal branding consultation'],
     ],
     goldenFeatures: [
       [],
-      [],
-      ['2 AI videos (Artificial intelligence)', '1 Influencer shoot'],
-      ['3 AI videos', '3 Influencer shoots', 'Website design'],
-      ['5 AI videos', '4 Influencer shoots', 'Website + SEO', 'Event management (50 guests)'],
+      ['2 Videography shoots', 'Competitor analysis'],
+      ['Targeting service', '1 AI video production'],
+      ['2 Influencer management', '2 AI video production', 'Corporate event organization'],
+      ['4 Influencer management', '3 AI video production', 'Website design', 'Logo design'],
+      ['6 Influencer management', '5 AI video production', 'Website design', 'Brandbook creation', 'Premium support service', 'Personal branding consultation'],
     ],
   },
 

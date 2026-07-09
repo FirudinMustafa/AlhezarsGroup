@@ -201,20 +201,22 @@ const az: Translations = {
   },
 
   socialPackages: {
-    subtitles: ['Başlanğıc', 'Böyümə', 'Ən Populyar', 'Professional', 'Korporativ'],
+    subtitles: ['Başlanğıc', 'Sərfəli', 'Ən Populyar', 'Geniş', 'Korporativ', 'Tam Ekosistem'],
     features: [
-      ['2 mobilograf çəkilişi', '10 story (manual)', '1 videoqraf çəkilişi', '2 qrafik dizayn post', '5 professional foto', 'Targeting xidməti', 'Sosial portfoliya nəzarət'],
-      ['5 mobilograf çəkilişi', '5 motion post', '13 story', '2 videoqraf xidməti', 'Targeting', '5 qrafik dizayn post', '10 kamera ilə foto', 'Kontent plan', 'Logo dizayn', 'Bioqrafiya & Highlights'],
-      ['10 mobilograf çəkilişi', '10 motion post', '33 story', '4 videoqraf xidməti', '2 AI video (Süni intellekt)', '1 Bloger çəkilişi', 'Targeting', '10 qrafik dizayn post', 'Kontent plan', 'Logo dizayn', 'Bioqrafiya & Highlights'],
-      ['15 mobilograf çəkilişi', '15 motion post', '47 story', '7 videoqraf xidməti', '3 AI video', '3 Bloger çəkilişi', 'Targeting', '20 qrafik dizayn post', 'Website dizayn', 'Logo dizayn', 'Bioqrafiya & Highlights'],
-      ['20 mobilograf çəkilişi', '15 motion post', '60 story', '10 videoqraf çəkilişi', '5 AI video', '4 Bloger çəkilişi', 'Targeting', '30 qrafik dizayn post', '40 professional foto', 'Website + SEO', 'Event təşkili (50 nəfər)', 'Bioqrafiya & Highlights'],
+      ['Sosial Media Menecmenti', '8 Qrafik dizayn postu', '4 Mobiloqrafiya çəkilişi', 'Aylıq kontent planı', 'Aylıq hesabat'],
+      ['Sosial Media Menecmenti', '12 Qrafik dizayn postu', '5 Mobiloqrafiya çəkilişi', '2 Videoqraf çəkilişi', 'Aylıq kontent planı', 'Rəqib analizi', 'Aylıq hesabat və analiz', 'Highlight dizaynı', 'Bioqrafiya tənzimlənməsi'],
+      ['Sosial Media Menecmenti', '14 Qrafik dizayn postu', '10 Story', '4 Mobiloqrafiya çəkilişi', '4 Videoqrafiya çəkilişi', 'Targetinq xidməti', '1 AI video hazırlanması', 'Kontent planı', 'Rəqib analizi', 'Aylıq hesabat və analiz', 'Highlight dizaynı', 'Bioqrafiya tənzimlənməsi'],
+      ['Sosial Media Menecmenti', '16 Qrafik dizayn postu', '5 Motion dizayn postu', '10 Story', '6 Mobiloqrafiya çəkilişi', '4 Videoqrafiya çəkilişi', 'Targetinq xidməti', '2 Influencer menecment', '2 AI video hazırlanması', 'Korporativ tədbir təşkilatçılıqı', 'Kontent planı', 'Rəqib analizi', 'Aylıq hesabat və analiz', 'Highlight dizaynı', 'Bioqrafiya tənzimlənməsi'],
+      ['Sosial Media Menecmenti', '18 Qrafik dizayn postu', '8 Motion dizayn postu', '15 Story', '3 Mobiloqrafiya çəkilişi', '10 Videoqrafiya çəkilişi', 'Targetinq xidməti', '4 Influencer menecment', '3 AI video hazırlanması', 'Veb-sayt dizaynı', 'Logo dizaynı', 'Korporativ tədbir təşkilatçılıqı', 'Kontent planı', 'Rəqib analizi', 'Aylıq hesabat və analiz', 'Highlight dizaynı', 'Bioqrafiya tənzimlənməsi'],
+      ['Sosial Media Menecmenti', '22 Qrafik dizayn postu', '10 Motion dizayn postu', '30 Story', '5 Mobiloqrafiya çəkilişi', '12 Videoqrafiya çəkilişi', 'Targetinq xidməti', '6 Influencer menecment', '5 AI video hazırlanması', 'Veb-sayt dizaynı', 'Logo dizaynı', 'Korporativ tədbir təşkilatçılıqı', 'Kontent planı', 'Rəqib analizi', 'Aylıq hesabat və analiz', 'Highlight dizaynı', 'Bioqrafiya tənzimlənməsi', 'Brendbook hazırlanması', 'Premium dəstək xidməti', 'Şəxsi brendinq konsultasiyası'],
     ],
     goldenFeatures: [
       [],
-      [],
-      ['2 AI video (Süni intellekt)', '1 Bloger çəkilişi'],
-      ['3 AI video', '3 Bloger çəkilişi', 'Website dizayn'],
-      ['5 AI video', '4 Bloger çəkilişi', 'Website + SEO', 'Event təşkili (50 nəfər)'],
+      ['2 Videoqraf çəkilişi', 'Rəqib analizi'],
+      ['Targetinq xidməti', '1 AI video hazırlanması'],
+      ['2 Influencer menecment', '2 AI video hazırlanması', 'Korporativ tədbir təşkilatçılıqı'],
+      ['4 Influencer menecment', '3 AI video hazırlanması', 'Veb-sayt dizaynı', 'Logo dizaynı'],
+      ['6 Influencer menecment', '5 AI video hazırlanması', 'Veb-sayt dizaynı', 'Brendbook hazırlanması', 'Premium dəstək xidməti', 'Şəxsi brendinq konsultasiyası'],
     ],
   },
 
