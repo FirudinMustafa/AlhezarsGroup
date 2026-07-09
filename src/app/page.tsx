@@ -688,6 +688,27 @@ function Hero() {
       <div className="absolute top-[10%] left-[5%] w-[350px] h-[350px] md:w-[700px] md:h-[700px] bg-purple-700/12 rounded-full blur-[60px] md:blur-[160px] pointer-events-none" />
       <div className="absolute bottom-[5%] right-[0%] w-[250px] h-[250px] md:w-[500px] md:h-[500px] bg-violet-600/10 rounded-full blur-[50px] md:blur-[140px] pointer-events-none" />
 
+      {/* Real logo centerpiece — the actual logo, with particles swirling around it */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+        <div className="relative">
+          <div className="absolute inset-0 rounded-full bg-purple-600/25 blur-3xl" />
+          <Image
+            src="/alhezarsLogo.jpeg"
+            alt=""
+            aria-hidden
+            width={480}
+            height={480}
+            priority
+            className="relative w-[clamp(230px,44vw,480px)] h-auto opacity-[0.9] select-none"
+            style={{
+              mixBlendMode: 'screen',
+              maskImage: 'radial-gradient(circle at center, #000 44%, transparent 72%)',
+              WebkitMaskImage: 'radial-gradient(circle at center, #000 44%, transparent 72%)',
+            }}
+          />
+        </div>
+      </div>
+
       {/* Content */}
       <div className="relative max-w-6xl mx-auto px-5 sm:px-8 text-center">
         {/* Badge */}
