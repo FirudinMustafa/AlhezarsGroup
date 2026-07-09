@@ -33,7 +33,7 @@ export default function PackagesNavbar({ activePage }: { activePage: 'sosial-med
         <div className="px-5">
           <div className="flex items-center justify-between h-[48px]">
             <Link href="/" className="flex items-center gap-2">
-              <Image src="/alhezarsLogo.jpeg" alt="Alhezars" width={24} height={24} className="object-contain rounded-md" priority />
+              <Image src="/alhezarsLogo.png" alt="Alhezars" width={24} height={24} className="object-contain" priority />
               <span className="text-[14px] font-semibold tracking-[-0.01em] text-white">Alhezars</span>
             </Link>
 
