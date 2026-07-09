@@ -72,7 +72,7 @@ function loadLogoShape(): Promise<[number, number, number, number, number][]> {
   return new Promise((resolve) => {
     const img = new window.Image();
     img.crossOrigin = 'anonymous';
-    img.src = '/alhezarsLogo.jpeg';
+    img.src = '/alhezarsLogo.png';
     img.onload = () => {
       const S = 200;
       const off = document.createElement('canvas');
@@ -85,12 +85,11 @@ function loadLogoShape(): Promise<[number, number, number, number, number][]> {
         for (let x = 0; x < S; x++) {
           const i = (y * S + x) * 4;
           const rr = d.data[i], gg = d.data[i + 1], bb = d.data[i + 2];
-          // The new logo is a JPEG (no alpha), so pick the bright purple
-          // owl+A pixels by luminance + purple bias and skip the dark
-          // background. Sampled colors are boosted so the shape reads well
-          // through the screen blend.
+          // Sample the bright purple owl+A of the badge logo (skip the dark
+          // circle and the transparent corners) so the particles gather into
+          // the owl+A shape. Colors are boosted to read through the blend.
           const lum = 0.299 * rr + 0.587 * gg + 0.114 * bb;
-          if (lum > 50 && bb >= gg) {
+          if (lum > 62 && bb >= gg) {
             const boost = 1.35;
             const R = Math.min(255, rr * boost);
             const G = Math.min(255, gg * boost);
@@ -687,27 +686,6 @@ function Hero() {
       {/* Static ambient orbs */}
       <div className="absolute top-[10%] left-[5%] w-[350px] h-[350px] md:w-[700px] md:h-[700px] bg-purple-700/12 rounded-full blur-[60px] md:blur-[160px] pointer-events-none" />
       <div className="absolute bottom-[5%] right-[0%] w-[250px] h-[250px] md:w-[500px] md:h-[500px] bg-violet-600/10 rounded-full blur-[50px] md:blur-[140px] pointer-events-none" />
-
-      {/* Real logo centerpiece — the actual logo, with particles swirling around it */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-        <div className="relative">
-          <div className="absolute inset-0 rounded-full bg-purple-600/25 blur-3xl" />
-          <Image
-            src="/alhezarsLogo.jpeg"
-            alt=""
-            aria-hidden
-            width={480}
-            height={480}
-            priority
-            className="relative w-[clamp(230px,44vw,480px)] h-auto opacity-[0.9] select-none"
-            style={{
-              mixBlendMode: 'screen',
-              maskImage: 'radial-gradient(circle at center, #000 44%, transparent 72%)',
-              WebkitMaskImage: 'radial-gradient(circle at center, #000 44%, transparent 72%)',
-            }}
-          />
-        </div>
-      </div>
 
       {/* Content */}
       <div className="relative max-w-6xl mx-auto px-5 sm:px-8 text-center">
