@@ -142,7 +142,7 @@ const ru: Translations = {
     successDesc: 'Мы свяжемся с вами в кратчайшие сроки. Вы также можете написать нам в WhatsApp.',
     successAgain: 'Отправить снова',
     errorDefault: 'Произошла ошибка.',
-    address: 'CV46+XHM, 5 Nadir Əliyev, Bakı 1075, Azerbaycan',
+    address: 'Shahrazad Rent Home, 21 Zərifə Əliyeva, Bakı 1000, Azerbaycan',
   },
 
   map: {
