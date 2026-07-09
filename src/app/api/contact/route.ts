@@ -48,7 +48,7 @@ export async function POST(request: Request) {
     //
     // await resend.emails.send({
     //   from: 'Alhezars Sayt <noreply@alhezars.com>',
-    //   to: 'info@alhezars.com',
+    //   to: 'alhezarsgroup@gmail.com',
     //   subject: `Yeni Müraciət: ${safeName}`,
     //   html: `
     //     <h2>Yeni Müraciət</h2>

@@ -15,7 +15,7 @@ const jsonLd = {
   '@type': ['Organization', 'LocalBusiness'],
   name: 'Alhezars Group',
   url: 'https://alhezars.com',
-  email: 'info@alhezars.com',
+  email: 'alhezarsgroup@gmail.com',
   telephone: '+994552119406',
   description:
     'Bakıda bütün xidmətləri özündə cəmləşdirən agentlik. Kontent istehsalı, sosial media idarəçiliyi, web dizayn, SEO və reklam xidmətləri.',

@@ -98,7 +98,7 @@ export default function SocialMediaPage() {
               <Phone className="w-4 h-4" /> {p.whatsapp}
             </a>
             <a
-              href="mailto:info@alhezars.com"
+              href="mailto:alhezarsgroup@gmail.com"
               className="inline-flex items-center justify-center gap-2 px-7 py-3 text-[14px] font-medium text-white/60 bg-white/[0.06] rounded-full hover:bg-white/[0.1] transition-colors"
             >
               <Mail className="w-4 h-4" /> {p.emailBtn}
