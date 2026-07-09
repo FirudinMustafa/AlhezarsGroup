@@ -72,7 +72,7 @@ function loadLogoShape(): Promise<[number, number, number, number, number][]> {
   return new Promise((resolve) => {
     const img = new window.Image();
     img.crossOrigin = 'anonymous';
-    img.src = '/logo.png';
+    img.src = '/alhezarsLogo.jpeg';
     img.onload = () => {
       const S = 200;
       const off = document.createElement('canvas');
@@ -84,8 +84,19 @@ function loadLogoShape(): Promise<[number, number, number, number, number][]> {
       for (let y = 0; y < S; y++) {
         for (let x = 0; x < S; x++) {
           const i = (y * S + x) * 4;
-          if (d.data[i + 3] > 100)
-            pts.push([(x / S) * 34 - 17, (y / S) * 34 - 17, d.data[i], d.data[i + 1], d.data[i + 2]]);
+          const rr = d.data[i], gg = d.data[i + 1], bb = d.data[i + 2];
+          // The new logo is a JPEG (no alpha), so pick the bright purple
+          // owl+A pixels by luminance + purple bias and skip the dark
+          // background. Sampled colors are boosted so the shape reads well
+          // through the screen blend.
+          const lum = 0.299 * rr + 0.587 * gg + 0.114 * bb;
+          if (lum > 50 && bb >= gg) {
+            const boost = 1.35;
+            const R = Math.min(255, rr * boost);
+            const G = Math.min(255, gg * boost);
+            const B = Math.min(255, bb * boost);
+            pts.push([(x / S) * 34 - 17, (y / S) * 34 - 17, R, G, B]);
+          }
         }
       }
       _logoShapeCache = pts;
@@ -294,11 +305,11 @@ function CountUp({ to, suffix = '', duration = 1800 }: { to: number; suffix?: st
 function LogoMark({ width = 36, height = 36, className = '' }: { width?: number; height?: number; className?: string }) {
   return (
     <Image
-      src="/logo.png"
+      src="/alhezarsLogo.jpeg"
       alt="Alhezars Group"
       width={width}
       height={height}
-      className={`object-contain ${className}`}
+      className={`object-contain rounded-lg ${className}`}
       priority
     />
   );

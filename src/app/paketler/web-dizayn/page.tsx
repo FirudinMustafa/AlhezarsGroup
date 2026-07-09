@@ -109,7 +109,7 @@ export default function WebDizaynPage() {
       <footer className="bg-white/[0.03] border-t border-white/[0.05] py-8 px-6">
         <div className="max-w-[1280px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/logo.png" alt="Alhezars" width={22} height={22} className="object-contain" />
+            <Image src="/alhezarsLogo.jpeg" alt="Alhezars" width={22} height={22} className="object-contain rounded-md" />
             <span className="text-[13px] font-semibold text-white">Alhezars</span>
           </Link>
           <p className="text-[12px] text-white/25">&copy; {new Date().getFullYear()} Alhezars Group</p>
