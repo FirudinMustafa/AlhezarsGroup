@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronRight, Phone, Mail, Instagram } from 'lucide-react';
 import { WEB_PACKAGES } from '../../lib/packages';
-import PackagesNavbar from '../../components/PackagesNavbar';
+import Navbar from '../../components/Navbar';
 import PackageCarousel from '../../components/PackageCarousel';
 import { useLanguage } from '../../lib/LanguageContext';
 
@@ -23,7 +23,7 @@ export default function WebDizaynPage() {
 
   return (
     <main className="bg-[#060b1a] min-h-screen overflow-x-hidden">
-      <PackagesNavbar activePage="web-dizayn" />
+      <Navbar />
 
       <section className="pt-32 pb-16 px-6">
         <div className="max-w-2xl mx-auto text-center">

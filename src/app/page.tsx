@@ -6,13 +6,11 @@ import {
   useRef,
 } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useLanguage } from './lib/LanguageContext';
-import LanguageSwitcher from './components/LanguageSwitcher';
+import Navbar from './components/Navbar';
+import LogoMark from './components/LogoMark';
 import {
   ChevronRight,
-  ArrowRight,
-  Menu,
   X,
   Camera,
   Globe,
@@ -29,6 +27,9 @@ import {
   CheckCircle2,
   AlertCircle,
   Send,
+  Video,
+  Sparkles,
+  Play,
 } from 'lucide-react';
 
 // ─────────────────────────────────────────────────────────────────
@@ -56,10 +57,42 @@ const TESTIMONIAL_META = [
   { color: 'from-emerald-600 to-teal-800', stars: 5 },
 ];
 
-const NAV_SECTION_IDS = ['hero', 'xidmetler', 'proses', 'testimonials', 'faq', 'haqqimizda', 'elaqe'];
+const NAV_SECTION_IDS = ['hero', 'xidmetler', 'proses', 'portfolio', 'testimonials', 'faq', 'haqqimizda', 'elaqe'];
 
 const HERO_STAT_VALUES = [5, 184, 4, 360];
 const ABOUT_STAT_VALUES = [5, 184, 100, 4];
+
+// Portfolio metadata — index-aligned with t.portfolio.items in each locale file.
+// (image, category & accent color are visual/structural, not translatable copy.)
+type PortfolioCategory =
+  | 'realestate' | 'hospitality' | 'health' | 'fashion' | 'auto' | 'legal' | 'entertainment' | 'consumer';
+
+// Order here is index-aligned with t.portfolio.items in every locale file —
+// the first three (Sea Breeze, Unilever, Raffle Residences) are the ones
+// shown in the collapsed "top 3" preview before "show more" is clicked.
+const PORTFOLIO_META: { image: string; category: PortfolioCategory; hasVideo: boolean; video?: string; instagram?: string; accent: string }[] = [
+  { image: '/portfolio/sea-breeze.webp', category: 'hospitality', hasVideo: false, instagram: 'https://www.instagram.com/seabreezeresortbaku/', accent: 'from-sky-600 to-blue-900' },
+  { image: '/portfolio/unilever.webp', category: 'consumer', hasVideo: false, instagram: 'https://www.instagram.com/unilever/', accent: 'from-white to-slate-100' },
+  { image: '/portfolio/raffle-residences.webp', category: 'hospitality', hasVideo: true, video: '/portfolio/videos/raffle-sea-breeze.mp4', instagram: 'https://www.instagram.com/raffle.group/', accent: 'from-amber-600 to-yellow-800' },
+  { image: '/portfolio/rise-plaza.webp', category: 'realestate', hasVideo: true, video: '/portfolio/videos/rise-plaza.mp4', instagram: 'https://www.instagram.com/riseplaza/', accent: 'from-blue-600 to-indigo-900' },
+  { image: '/portfolio/digital-residence.webp', category: 'realestate', hasVideo: true, video: '/portfolio/videos/digital-residence.mp4', instagram: 'https://www.instagram.com/digital.residence/', accent: 'from-sky-500 to-blue-800' },
+  { image: '/portfolio/ganjlik-garden.webp', category: 'realestate', hasVideo: true, video: '/portfolio/videos/ganjlik-garden.mp4', instagram: 'https://www.instagram.com/ganjlik.garden/', accent: 'from-emerald-600 to-green-900' },
+  { image: '/portfolio/munhen-doner.webp', category: 'hospitality', hasVideo: true, video: '/portfolio/videos/munhen-doner.mp4', instagram: 'https://www.instagram.com/munhendoneraz/', accent: 'from-red-600 to-orange-800' },
+  { image: '/portfolio/microgreens.webp', category: 'hospitality', hasVideo: true, video: '/portfolio/videos/microgreens.mp4', instagram: 'https://www.instagram.com/microgreens_azerbaycan/', accent: 'from-lime-500 to-green-800' },
+  { image: '/portfolio/my-doctor-logo.webp', category: 'health', hasVideo: true, video: '/portfolio/videos/my-doctor.mp4', instagram: 'https://www.instagram.com/mydoctormedical/', accent: 'from-teal-500 to-emerald-800' },
+  { image: '/portfolio/afandy-parfum.webp', category: 'health', hasVideo: true, video: '/portfolio/videos/afandy-parfum.mp4', instagram: 'https://www.instagram.com/afandygallery_parfum/', accent: 'from-yellow-600 to-amber-900' },
+  { image: '/portfolio/cravatte.webp', category: 'fashion', hasVideo: true, video: '/portfolio/videos/cravatte.mp4', instagram: 'https://www.instagram.com/cravatte.az/', accent: 'from-rose-700 to-red-950' },
+  { image: '/portfolio/vlt-autopark.webp', category: 'auto', hasVideo: true, video: '/portfolio/videos/vlt-autopark.mp4', instagram: 'https://www.instagram.com/autopark_vlt/', accent: 'from-red-600 to-rose-900' },
+  { image: '/portfolio/aga-service.webp', category: 'entertainment', hasVideo: false, instagram: 'https://www.instagram.com/agaplaystation/', accent: 'from-slate-500 to-slate-800' },
+  { image: '/portfolio/kyb.webp', category: 'legal', hasVideo: true, video: '/portfolio/videos/kyb.mp4', accent: 'from-amber-500 to-yellow-800' },
+  { image: '/portfolio/baku-karting.webp', category: 'entertainment', hasVideo: false, instagram: 'https://www.instagram.com/bakucitykarting/', accent: 'from-red-600 to-neutral-950' },
+  { image: '/portfolio/diamond-residence.webp', category: 'realestate', hasVideo: true, video: '/portfolio/videos/diamond-residence.mp4', instagram: 'https://www.instagram.com/residence.diamond/', accent: 'from-emerald-700 to-green-950' },
+  { image: '/portfolio/parfumcity.webp', category: 'health', hasVideo: true, video: '/portfolio/videos/parfumcity.mp4', instagram: 'https://www.instagram.com/parfumcity.az/', accent: 'from-neutral-800 to-black' },
+];
+
+const PORTFOLIO_FILTERS: PortfolioCategory[] = [
+  'realestate', 'hospitality', 'health', 'fashion', 'auto', 'legal', 'entertainment', 'consumer',
+];
 
 // ─────────────────────────────────────────────────────────────────
 // LOGO PARTICLES — canvas particle background (desktop only)
@@ -84,12 +117,13 @@ function loadLogoShape(): Promise<[number, number, number, number, number][]> {
       for (let y = 0; y < S; y++) {
         for (let x = 0; x < S; x++) {
           const i = (y * S + x) * 4;
-          const rr = d.data[i], gg = d.data[i + 1], bb = d.data[i + 2];
-          // Sample the bright purple owl+A of the badge logo (skip the dark
-          // circle and the transparent corners) so the particles gather into
-          // the owl+A shape. Colors are boosted to read through the blend.
+          const rr = d.data[i], gg = d.data[i + 1], bb = d.data[i + 2], aa = d.data[i + 3];
+          // The logo art is a purple owl+A on a transparent background (no
+          // background badge to exclude), so alpha alone marks the shape.
+          // A small luminance floor drops the near-black outline pixels,
+          // which would otherwise render as invisible dots on the dark hero bg.
           const lum = 0.299 * rr + 0.587 * gg + 0.114 * bb;
-          if (lum > 62 && bb >= gg) {
+          if (aa > 100 && lum > 10) {
             const boost = 1.35;
             const R = Math.min(255, rr * boost);
             const G = Math.min(255, gg * boost);
@@ -301,19 +335,6 @@ function CountUp({ to, suffix = '', duration = 1800 }: { to: number; suffix?: st
 // SMALL UTILITIES
 // ─────────────────────────────────────────────────────────────────
 
-function LogoMark({ width = 36, height = 36, className = '' }: { width?: number; height?: number; className?: string }) {
-  return (
-    <Image
-      src="/alhezarsLogo.png"
-      alt="Alhezars Group"
-      width={width}
-      height={height}
-      className={`object-contain ${className}`}
-      priority
-    />
-  );
-}
-
 // Marquee row — CSS animation (GPU-friendly, no JS overhead)
 function MarqueeRow({
   items,
@@ -486,183 +507,6 @@ function LoadingScreen({ onDone }: { onDone: () => void }) {
         {t.loading.tagline}
       </p>
     </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────
-// NAVBAR
-// ─────────────────────────────────────────────────────────────────
-
-function Navbar() {
-  const { t } = useLanguage();
-  const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [pkgOpen, setPkgOpen] = useState(false);
-  const [mobilePkgOpen, setMobilePkgOpen] = useState(false);
-  const pkgCloseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const NAV_LINKS = [
-    { label: t.nav.services, href: '#xidmetler' },
-    { label: t.nav.process, href: '#proses' },
-    { label: t.nav.about, href: '#haqqimizda' },
-  ];
-
-  useEffect(() => {
-    let rafId: number | null = null;
-    const onScroll = () => {
-      if (rafId !== null) return;
-      rafId = requestAnimationFrame(() => {
-        setScrolled(window.scrollY > 40);
-        rafId = null;
-      });
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      if (rafId !== null) cancelAnimationFrame(rafId);
-    };
-  }, []);
-
-  return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? 'bg-black/75 backdrop-blur-2xl border-b border-white/[0.05]'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-5 sm:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <a href="#hero" className="flex items-center gap-2.5 group">
-            <LogoMark />
-            <span className="text-[17px] font-bold tracking-tight">
-              <span className="text-white">Alhezars</span>
-              <span className="text-purple-400"> Group</span>
-            </span>
-          </a>
-
-          {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-7">
-            {/* Paketlər dropdown */}
-            <div
-              className="relative"
-              onMouseEnter={() => { if (pkgCloseTimer.current) clearTimeout(pkgCloseTimer.current); setPkgOpen(true); }}
-              onMouseLeave={() => { pkgCloseTimer.current = setTimeout(() => setPkgOpen(false), 150); }}
-            >
-              <button className="relative flex items-center gap-1 text-sm text-white/40 hover:text-white transition-colors duration-200">
-                {t.nav.packages}
-                <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${pkgOpen ? 'rotate-180' : ''}`} />
-              </button>
-              {pkgOpen && (
-                  <div
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-52 bg-black/90 backdrop-blur-2xl border border-white/[0.07] rounded-xl overflow-hidden p-1.5 shadow-xl shadow-black/50"
-                  >
-                    <Link
-                      href="/paketler/sosial-media"
-                      className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg hover:bg-white/[0.06] text-white/55 hover:text-white transition-colors text-sm"
-                    >
-                      <Instagram className="w-3.5 h-3.5 text-fuchsia-400 flex-shrink-0" />
-                      {t.nav.socialMedia}
-                    </Link>
-                    <Link
-                      href="/paketler/web-dizayn"
-                      className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg hover:bg-white/[0.06] text-white/55 hover:text-white transition-colors text-sm"
-                    >
-                      <Globe className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
-                      {t.nav.webDesign}
-                    </Link>
-                  </div>
-                )}
-            </div>
-
-            {NAV_LINKS.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                className="relative text-sm text-white/40 hover:text-white transition-colors duration-200 group"
-              >
-                {l.label}
-                <span className="absolute -bottom-0.5 left-0 right-0 h-px bg-purple-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-              </a>
-            ))}
-          </div>
-
-          {/* CTA */}
-                      <a
-              href="#elaqe"
-              className="hidden md:flex items-center gap-1.5 px-5 py-2.5 text-sm font-bold bg-purple-700 hover:bg-purple-600 text-white rounded-full transition-colors duration-200 shadow-lg shadow-purple-900/30"
-            >
-              {t.nav.getStarted} <ArrowRight className="w-3.5 h-3.5" />
-            </a>
-
-          <LanguageSwitcher className="hidden md:block" />
-
-          <button
-            onClick={() => setOpen(!open)}
-            className="md:hidden p-2 text-white/50 hover:text-white transition-colors"
-            aria-expanded={open}
-            aria-label={open ? t.nav.closeMenu : t.nav.openMenu}
-          >
-              {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile menu */}
-      {open && (
-        <div className="md:hidden overflow-hidden bg-black/95 backdrop-blur-2xl border-b border-white/[0.05]">
-          <div className="px-5 py-4 flex flex-col">
-            <div>
-              <button
-                onClick={() => setMobilePkgOpen(!mobilePkgOpen)}
-                className="flex items-center justify-between w-full py-3 text-sm text-white/55 hover:text-white border-b border-white/[0.04] transition-colors"
-              >
-                {t.nav.packages}
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${mobilePkgOpen ? 'rotate-180' : ''}`} />
-              </button>
-              {mobilePkgOpen && (
-                <div className="overflow-hidden">
-                  <Link
-                    href="/paketler/sosial-media"
-                    onClick={() => setOpen(false)}
-                    className="flex items-center gap-2 py-2.5 pl-4 text-sm text-white/40 hover:text-white border-b border-white/[0.04] transition-colors"
-                  >
-                    <Instagram className="w-3.5 h-3.5 text-fuchsia-400" />
-                    {t.nav.socialMedia}
-                  </Link>
-                  <Link
-                    href="/paketler/web-dizayn"
-                    onClick={() => setOpen(false)}
-                    className="flex items-center gap-2 py-2.5 pl-4 text-sm text-white/40 hover:text-white border-b border-white/[0.04] transition-colors"
-                  >
-                    <Globe className="w-3.5 h-3.5 text-blue-400" />
-                    {t.nav.webDesign}
-                  </Link>
-                </div>
-              )}
-            </div>
-            {NAV_LINKS.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="py-3 text-sm text-white/55 hover:text-white border-b border-white/[0.04] last:border-0 transition-colors"
-              >
-                {l.label}
-              </a>
-            ))}
-            <LanguageSwitcher variant="inline" className="py-3 border-b border-white/[0.04]" />
-            <a
-              href="#elaqe"
-              onClick={() => setOpen(false)}
-              className="mt-2 block text-center py-3 text-sm font-bold bg-purple-700 text-white rounded-full"
-            >
-              {t.nav.getStarted}
-            </a>
-          </div>
-        </div>
-      )}
-    </nav>
   );
 }
 
@@ -863,6 +707,259 @@ function Process() {
           ))}
         </div>
       </div>
+    </section>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────
+// PORTFOLIO
+// ─────────────────────────────────────────────────────────────────
+
+function Portfolio() {
+  const { t } = useLanguage();
+  const [active, setActive] = useState<PortfolioCategory | 'all'>('all');
+  const items = PORTFOLIO_META.map((meta, i) => ({ ...meta, ...t.portfolio.items[i] }));
+  const [videoModal, setVideoModal] = useState<(typeof items)[number] | null>(null);
+  const [expanded, setExpanded] = useState(false);
+  const filterRowRef = useRef<HTMLDivElement>(null);
+  const [showLeftFade, setShowLeftFade] = useState(false);
+  const [showRightFade, setShowRightFade] = useState(false);
+
+  const filtered = active === 'all' ? items : items.filter((it) => it.category === active);
+  const PREVIEW_COUNT = 3;
+  const visible = expanded ? filtered : filtered.slice(0, PREVIEW_COUNT);
+  const hasMore = filtered.length > PREVIEW_COUNT;
+
+  function selectCategory(cat: PortfolioCategory | 'all') {
+    setActive(cat);
+    setExpanded(false);
+  }
+
+  useEffect(() => {
+    const el = filterRowRef.current;
+    if (!el) return;
+    const update = () => {
+      setShowLeftFade(el.scrollLeft > 4);
+      setShowRightFade(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
+    };
+    update();
+    el.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    return () => {
+      el.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!videoModal) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setVideoModal(null); };
+    window.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [videoModal]);
+
+  return (
+    <section id="portfolio" className="py-28 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8">
+        <div className="text-center mb-14">
+          <p className="text-purple-400 text-xs font-bold uppercase tracking-[0.25em] mb-4 inline-flex items-center gap-2">
+            <Sparkles className="w-3.5 h-3.5" />
+            {t.portfolio.badge}
+          </p>
+          <h2 className="text-[clamp(32px,5vw,52px)] font-black text-white mb-5 leading-tight">
+            {t.portfolio.title1}
+            <br />
+            <span className="text-white/20">{t.portfolio.title2}</span>
+          </h2>
+          <p className="text-white/30 max-w-md mx-auto leading-relaxed">
+            {t.portfolio.desc}
+          </p>
+        </div>
+
+        {/* Category filters — nowrap+scroll on mobile (always starts at the first chip,
+            so nothing is clipped/unreachable), wraps to multiple centered lines on
+            larger screens where there's room (no scrolling needed, so nothing can
+            get clipped by overflow + centering there either). Edge fades hint that
+            there's more to scroll to on mobile. */}
+        <div className="relative mb-10">
+          <div
+            ref={filterRowRef}
+            className="flex flex-nowrap sm:flex-wrap gap-2 overflow-x-auto sm:overflow-visible justify-start sm:justify-center pb-2 sm:pb-0 no-scrollbar"
+          >
+            <button
+              onClick={() => selectCategory('all')}
+              className={`flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-colors duration-200 ${
+                active === 'all'
+                  ? 'bg-purple-700 text-white'
+                  : 'bg-white/[0.04] text-white/40 hover:text-white hover:bg-white/[0.08] border border-white/[0.06]'
+              }`}
+            >
+              {t.portfolio.categoryAll}
+            </button>
+            {PORTFOLIO_FILTERS.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => selectCategory(cat)}
+                className={`flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-colors duration-200 ${
+                  active === cat
+                    ? 'bg-purple-700 text-white'
+                    : 'bg-white/[0.04] text-white/40 hover:text-white hover:bg-white/[0.08] border border-white/[0.06]'
+                }`}
+              >
+                {t.portfolio.categories[cat]}
+              </button>
+            ))}
+          </div>
+          {showLeftFade && (
+            <div className="sm:hidden pointer-events-none absolute left-0 top-0 bottom-2 w-8 bg-gradient-to-r from-[#04040a] to-transparent" />
+          )}
+          {showRightFade && (
+            <div className="sm:hidden pointer-events-none absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-[#04040a] to-transparent" />
+          )}
+        </div>
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {visible.map((item) => (
+            <div
+              key={item.name}
+              className="group rounded-2xl bg-white/[0.025] border border-white/[0.06] overflow-hidden hover:border-purple-500/25 hover:bg-white/[0.04] transition-colors duration-300"
+            >
+              <div className={`relative aspect-[4/3] overflow-hidden bg-gradient-to-br ${item.accent}`}>
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-contain p-8 group-hover:scale-105 transition-transform duration-500"
+                />
+                {item.hasVideo && item.video && (
+                  <div className="absolute top-3 right-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/55 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-wider pointer-events-none">
+                    <Video className="w-3 h-3" />
+                    {t.portfolio.videoBadge}
+                  </div>
+                )}
+
+                {/* Bottom action row — video preview on the left, Instagram on the right */}
+                {(item.hasVideo && item.video) || item.instagram ? (
+                  <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-3">
+                    {item.hasVideo && item.video ? (
+                      <button
+                        onClick={() => setVideoModal(item)}
+                        aria-label={`${t.portfolio.videoBadge}: ${item.name}`}
+                        className="w-10 h-10 rounded-full bg-black/60 backdrop-blur-md hover:bg-purple-600 flex items-center justify-center text-white transition-colors duration-200 shadow-lg"
+                      >
+                        <Play className="w-4 h-4 ml-0.5" fill="currentColor" />
+                      </button>
+                    ) : <span />}
+                    {item.instagram ? (
+                      <a
+                        href={item.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`Instagram: ${item.name}`}
+                        className="w-10 h-10 rounded-full bg-black/60 backdrop-blur-md hover:bg-gradient-to-br hover:from-fuchsia-500 hover:via-pink-500 hover:to-amber-400 flex items-center justify-center text-white transition-colors duration-200 shadow-lg"
+                      >
+                        <Instagram className="w-4 h-4" />
+                      </a>
+                    ) : <span />}
+                  </div>
+                ) : null}
+              </div>
+              <div className="p-5">
+                <span className="text-[10px] font-bold text-purple-400 uppercase tracking-wider">
+                  {t.portfolio.categories[item.category]}
+                </span>
+                <h3 className="text-white font-bold text-base mt-1.5 mb-2 leading-snug">
+                  {item.name}
+                </h3>
+                <p className="text-white/30 text-[13px] leading-relaxed mb-3">
+                  {item.tagline}
+                </p>
+                <p className="text-white/20 text-[11px] font-semibold tracking-wide">
+                  {item.services}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {hasMore && (
+          <div className="flex justify-center mt-10">
+            <button
+              onClick={() => setExpanded((v) => !v)}
+              className="flex items-center gap-2 px-7 py-3 text-sm font-bold text-white/70 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] hover:border-white/[0.15] rounded-full transition-colors duration-200"
+            >
+              {expanded ? t.portfolio.showLess : t.portfolio.showMore}
+              <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} />
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Video lightbox — video on the left, brand info + Instagram on the right */}
+      {videoModal && (
+        <div
+          className="fixed inset-0 z-[150] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
+          onClick={() => setVideoModal(null)}
+        >
+          <button
+            onClick={() => setVideoModal(null)}
+            aria-label="Close"
+            className="absolute top-5 right-5 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+          <div
+            className="relative w-full max-w-3xl max-h-[90vh] rounded-2xl overflow-hidden shadow-2xl bg-[#0a0a12] border border-white/[0.08] flex flex-col sm:flex-row"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Video — left */}
+            <div className="sm:w-[46%] flex-shrink-0 bg-black flex items-center justify-center max-h-[42vh] sm:max-h-[90vh]">
+              <video
+                key={videoModal.video}
+                src={videoModal.video}
+                controls
+                autoPlay
+                playsInline
+                className="w-full h-full max-h-[42vh] sm:max-h-[90vh] object-contain"
+              />
+            </div>
+
+            {/* Brand info — right */}
+            <div className="sm:w-[54%] p-6 sm:p-8 overflow-y-auto flex flex-col">
+              <span className="text-[10px] font-bold text-purple-400 uppercase tracking-wider mb-2">
+                {t.portfolio.categories[videoModal.category]}
+              </span>
+              <h3 className="text-white font-black text-2xl leading-tight mb-3">
+                {videoModal.name}
+              </h3>
+              <p className="text-white/45 text-sm leading-relaxed mb-4">
+                {videoModal.tagline}
+              </p>
+              <p className="text-white/25 text-[11px] font-semibold tracking-wide uppercase mb-6">
+                {videoModal.services}
+              </p>
+
+              {videoModal.instagram && (
+                <a
+                  href={videoModal.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-auto inline-flex items-center gap-3 px-5 py-3 rounded-full bg-gradient-to-br from-fuchsia-500 via-pink-500 to-amber-400 text-white font-bold text-sm w-fit hover:opacity-90 transition-opacity"
+                >
+                  <Instagram className="w-4 h-4 flex-shrink-0" />
+                  {t.portfolio.instagramCta}
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
@@ -1495,6 +1592,7 @@ export default function Home() {
         <MarqueeBand />
         <Services />
         <Process />
+        <Portfolio />
         <Testimonials />
         <FAQ />
         <About />
