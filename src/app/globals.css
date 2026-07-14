@@ -112,6 +112,15 @@ body {
 .magnetic-btn:hover {
   will-change: transform;
 }
+
+/* Hide scrollbar for horizontally scrollable chip rows (portfolio filters) */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 .magnetic-btn {
   will-change: auto;
 }

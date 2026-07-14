@@ -37,3 +37,6 @@ next-env.d.ts
 
 # Claude Code session files
 .claude/
+
+# raw source archives (too large for git; assets already extracted into public/portfolio)
+*.zip

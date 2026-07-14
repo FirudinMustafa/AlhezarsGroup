@@ -9,6 +9,7 @@ export type Translations = {
     webDesign: string;
     services: string;
     process: string;
+    portfolio: string;
     about: string;
     getStarted: string;
     closeMenu: string;
@@ -46,6 +47,29 @@ export type Translations = {
     title1: string;
     title2: string;
     steps: { title: string; desc: string }[];
+  };
+
+  portfolio: {
+    badge: string;
+    title1: string;
+    title2: string;
+    desc: string;
+    categoryAll: string;
+    categories: {
+      realestate: string;
+      hospitality: string;
+      health: string;
+      fashion: string;
+      auto: string;
+      legal: string;
+      entertainment: string;
+      consumer: string;
+    };
+    videoBadge: string;
+    showMore: string;
+    showLess: string;
+    instagramCta: string;
+    items: { name: string; tagline: string; services: string }[];
   };
 
   testimonials: {
